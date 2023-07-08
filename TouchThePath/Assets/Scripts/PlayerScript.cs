@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -15,6 +16,10 @@ public class PlayerScript : MonoBehaviour
     public float HandPrintLimit;
     public float HandPrintInterval;
 
+    [Space]
+    public bool ChaseByCamera;
+    public float CameraDrag;
+
     void Awake()
     {
         rigidbody2 = GetComponent<Rigidbody2D>();
@@ -22,6 +27,17 @@ public class PlayerScript : MonoBehaviour
         //Restore HandPrint Alpha Color
         Color OriginalCol = Prefab_HandPrint.GetComponent<SpriteRenderer>().color;
         Prefab_HandPrint.transform.GetComponent<SpriteRenderer>().color = new Color(OriginalCol.r, OriginalCol.g, OriginalCol.b, 1f);
+    }
+
+
+    //Death when touch wall at night
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (GD.toNight)
+        {
+            //Bad ending
+            Destroy(GetComponent<PlayerScript>());
+        }
     }
 
 
@@ -58,5 +74,13 @@ public class PlayerScript : MonoBehaviour
         {
             HandPrintLoadtime -= Time.deltaTime;
         }
+
+        //Camera Chase
+        if (ChaseByCamera)
+        {
+            Vector3 targetPos = new Vector3(transform.position.x, transform.position.y, -10f);
+            Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, targetPos, Time.deltaTime * CameraDrag);
+        }
+        
     }
 }
