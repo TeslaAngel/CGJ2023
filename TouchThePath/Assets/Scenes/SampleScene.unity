@@ -896,10 +896,33 @@ MonoBehaviour:
   treasure: {fileID: 1101921590}
   nightSprite: {fileID: 1190149270}
   nightFadeTime: 0.5
+  Ghosts: []
+  FakeMountains: []
   handPrintPrefab: {fileID: 2751812760688240836, guid: 95d51e879d7ca4c46a4bee5ca754d66b, type: 3}
-  handPrintFadeInTime: 1
-  handPrintFlashCycle: 4
-  maxHandPrintCount: 4
+  handPrintAlphaCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -1.317357
+      outSlope: -1.317357
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.058644578
+    - serializedVersion: 3
+      time: 1
+      value: 0.2
+      inSlope: -0.841073
+      outSlope: -0.841073
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.05774957
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!4 &1053946097
 Transform:
   m_ObjectHideFlags: 0
