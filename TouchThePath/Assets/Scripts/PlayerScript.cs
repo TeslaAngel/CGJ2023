@@ -30,6 +30,17 @@ public class PlayerScript : MonoBehaviour
     }
 
 
+    //Death when touch wall at night
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (GD.toNight)
+        {
+            //Bad ending
+            Destroy(GetComponent<PlayerScript>());
+        }
+    }
+
+
     void Update()
     {
         //Behavior: move
