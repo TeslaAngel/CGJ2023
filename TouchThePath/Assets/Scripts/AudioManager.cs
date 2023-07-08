@@ -16,10 +16,10 @@ public enum Sound
 	GameNightBGM,
 
 	PlayerDied = 100,
-	PlayerInhale,
+    PlayerInhale,
 	PlayerDrop,
 	CreateHandPrint,
-	PlayerBeingHit,
+    PlayerBeingHit,
 
 	//添加在下面
 }
