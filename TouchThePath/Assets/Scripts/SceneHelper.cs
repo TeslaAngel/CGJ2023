@@ -28,7 +28,30 @@ public class SceneHelper : MonoBehaviour
 		var helper = canvasObj.GetComponent<SceneHelper>();
 		helper.fadeMask.enabled = false;
 		GameObject.DontDestroyOnLoad(canvasObj);
-		return helper;
+		return helper; 
+	}
+
+
+	//Scene Global Data
+	//public int toLoadLevel;
+	[HideInInspector]
+	public string toLoadLevelMapName;
+
+	public void GotoGameLevel(string levelMapName)
+	{
+		toLoadLevelMapName = levelMapName;
+		FadeLoadScene("SampleScene");
+	}
+
+
+	public void GotoLevelSelect()
+	{
+		FadeLoadScene("level_select");
+	}
+
+	public void GotoStart()
+	{
+		FadeLoadScene("start");
 	}
 
 
@@ -54,9 +77,9 @@ public class SceneHelper : MonoBehaviour
 
 
 	// Start is called before the first frame update
-	void Start()
-	{
-
-	}
+	//void Start()
+	//{
+	//
+	//}
 
 }

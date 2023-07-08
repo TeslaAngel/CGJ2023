@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DoorDetecter : MonoBehaviour
+public class LevelSelectController : MonoBehaviour
 {
 
 	public DoorObject[] doors;
@@ -12,8 +12,7 @@ public class DoorDetecter : MonoBehaviour
 	Camera cam;
 	int layerMask;
 
-
-	public Action<int> OnSelectLevel;
+	//public Action<int> OnSelectLevel;
 
 
 	// Start is called before the first frame update
@@ -32,11 +31,10 @@ public class DoorDetecter : MonoBehaviour
 		//Debug.Log(col);
 		if (col != null && col.gameObject.name.StartsWith("DoorDectector_"))
 		{
-			//越界？不检查哟
 			var strIndex = col.gameObject.name.Substring(14);
 			int index = int.Parse(strIndex);
 
-			if (index != selectingDoorIndex)
+			if (index < doors.Length && index != selectingDoorIndex)
 			{
 				Debug.LogWarning("selected: " + index);
 				selectingDoorIndex = index;
@@ -62,7 +60,13 @@ public class DoorDetecter : MonoBehaviour
 			if (Input.GetMouseButtonDown(0))
 			{
 				Debug.Log("Click Level " + selectingDoorIndex);
-				OnSelectLevel?.Invoke(selectingDoorIndex);
+				//OnSelectLevel?.Invoke(selectingDoorIndex);
+
+				string levelMapName = doors[selectingDoorIndex].levelMapName;
+				if (!string.IsNullOrEmpty(levelMapName))
+				{
+					SceneHelper.Instance.GotoGameLevel(levelMapName);
+				}
 			}
 		}
 
