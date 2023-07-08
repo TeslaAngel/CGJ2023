@@ -19,8 +19,7 @@ public class StartController : MonoBehaviour
 
 	void OnClickStart()
 	{
-		UnityEngine.SceneManagement.SceneManager.LoadScene("level_select");
+		SceneHelper.Instance.FadeLoadScene("level_select");
 	}
-
 
 }
