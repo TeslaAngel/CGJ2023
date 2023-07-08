@@ -28,6 +28,7 @@ public class PlayerScript : MonoBehaviour
     public float eyeBlinkCloseTime = 0.2f;
 
     Vector2 controlDirection;
+    bool controlable = true;
 
     public enum MoveDirection
     {
@@ -90,9 +91,11 @@ public class PlayerScript : MonoBehaviour
             }
             else if (objTag == "Wall")
             {
-				//Bad ending
-				Destroy(GetComponent<PlayerScript>());
-				GameController.Instance.OnPlayerDied();
+                GetPunch();
+			}
+            else if (objTag == "Chasm")
+            {
+                DropDown();
 			}
         }
         else
@@ -106,8 +109,12 @@ public class PlayerScript : MonoBehaviour
 
 	private void FixedUpdate()
 	{
+        if (!controlable)
+            controlDirection = Vector2.zero;
+        else
+			controlDirection = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+
 		//Behavior: move
-		controlDirection = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         rigidbody2.velocity = controlDirection * SpeedMultifier;
 	}
 
@@ -187,4 +194,34 @@ public class PlayerScript : MonoBehaviour
         }
         
     }
+
+
+    public void GetPunch()
+    {
+        controlable = false;
+		animator.Play("Player_Die");
+		animator.speed = 1.0f;
+
+		//人物不能行走
+		//显示惊讶特效
+
+		//event...  (不是当前时间)
+		//{
+		//显示一个boom.png的特效
+		//人物被击飞
+
+		Destroy(GetComponent<PlayerScript>());
+		GameController.Instance.OnPlayerDied();
+        //}
+	}
+
+    public void DropDown()
+    {
+		controlable = false;
+		//人物螺旋着掉入深渊
+
+
+		GameController.Instance.OnPlayerDied();
+	}
+
 }
