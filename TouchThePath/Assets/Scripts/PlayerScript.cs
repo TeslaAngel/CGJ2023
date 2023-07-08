@@ -27,6 +27,8 @@ public class PlayerScript : MonoBehaviour
     public float eyeBlinkInterval = 3f;
     public float eyeBlinkCloseTime = 0.2f;
 
+    Vector2 controlDirection;
+
     public enum MoveDirection
     {
         None = 0,
@@ -105,16 +107,17 @@ public class PlayerScript : MonoBehaviour
 	private void FixedUpdate()
 	{
 		//Behavior: move
-		rigidbody2.velocity = new Vector2(Input.GetAxis("Horizontal") * SpeedMultifier, Input.GetAxis("Vertical") * SpeedMultifier);
+		controlDirection = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        rigidbody2.velocity = controlDirection * SpeedMultifier;
 	}
 
 	void Update()
     {
         //根据方向控制动画
-        var velocity = rigidbody2.velocity;
-        if (velocity.sqrMagnitude > 0.25f)
+        if (Mathf.Abs(controlDirection.x) > 0.1f || Mathf.Abs(controlDirection.y) > 0.1f)
         {
-            var direction = velocity.normalized;
+            //var direction = controlDirection.normalized;
+            var direction = controlDirection;
             MoveDirection facingDir = GetVectorDirecition(direction);
             if (facingDir != faceDirection)
             {
@@ -160,7 +163,7 @@ public class PlayerScript : MonoBehaviour
             if (hit.collider != null)
             {
                 //Initiate a handprint on wall
-                GameController.Instance.AddHandPrint(hit.point, angle);
+                GameController.Instance.AddHandPrint(hit.point, hit.normal);
             }
             else
             {

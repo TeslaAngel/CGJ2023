@@ -22,8 +22,8 @@ public class GameController : MonoBehaviour
 
 	List<HandPrint> handPrints;
 
-	public float HandPrintLightIntensity { get; private set; }
-
+	//定义了手掌[0(第一个), 1(最后一个)]对应的alpha 
+	public AnimationCurve handPrintAlphaCurve;
 
 	LevelMap currentMap;
 
@@ -77,13 +77,17 @@ public class GameController : MonoBehaviour
 		return handPrints.Count < currentMap.maxHandPrintCount;
 	}
 
-	public bool AddHandPrint(Vector3 position, float angle)
+	public bool AddHandPrint(Vector3 position, Vector2 hitPointNormal)
 	{
 		//Initiate a handprint on wall
-		var obj = Instantiate(handPrintPrefab, position, Quaternion.Euler(0f, 0f, angle - 90f));//TO BE ALTERED
+		//var rotation = Quaternion.Euler(0f, 0f, angle - 90f);
+		var rotation = Quaternion.LookRotation(Vector3.back, -hitPointNormal);
+
+		var obj = Instantiate(handPrintPrefab, position, rotation);
 		var handprint = obj.GetComponent<HandPrint>();
 
-		float alpha = 1f - handPrints.Count / (float)currentMap.maxHandPrintCount;
+		float t = handPrints.Count / (float)currentMap.maxHandPrintCount;
+		float alpha = handPrintAlphaCurve.Evaluate(t);
 		handprint.SetDayStatus(alpha);
 		handPrints.Add(handprint);
 		//TODO: sfx
