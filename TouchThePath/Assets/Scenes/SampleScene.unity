@@ -348,6 +348,7 @@ MonoBehaviour:
   SpeedMultifier: 2
   HandPrintLimit: 5
   HandPrintInterval: 0.5
+  HandPrintAlphaDifference: 0.05
 --- !u!1 &1237331076
 GameObject:
   m_ObjectHideFlags: 0

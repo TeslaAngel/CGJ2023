@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 1706.6667
     height: 869.3334
   m_ShowMode: 4
-  m_Title: Scene
+  m_Title: Game
   m_RootView: {fileID: 6}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -447,9 +447,9 @@ MonoBehaviour:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: ae620000
-    m_LastClickedID: 25262
-    m_ExpandedIDs: 000000000c5f000000ca9a3bffffff7f
+    m_SelectedIDs: 325f0000
+    m_LastClickedID: 24370
+    m_ExpandedIDs: 000000001a5f000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -477,7 +477,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000000c5f0000
+    m_ExpandedIDs: 000000001a5f0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -569,7 +569,7 @@ MonoBehaviour:
     m_ControlHash: -371814159
     m_PrefName: Preview_InspectorPreview
   m_LastInspectedObjectInstanceID: -1
-  m_LastVerticalScrollValue: 302
+  m_LastVerticalScrollValue: 362
   m_GlobalObjectId: 
   m_InspectorMode: 0
   m_LockTracker:
@@ -607,8 +607,8 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 
-      m_LastClickedID: 0
+      m_SelectedIDs: ac5e0000
+      m_LastClickedID: 24236
       m_ExpandedIDs: 2efbffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
@@ -914,9 +914,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: -1.3950968, y: 0.3471383, z: -0.06210335}
+    m_Target: {x: 2.9945436, y: 4.9440413, z: -0.1371034}
     speed: 2
-    m_Value: {x: -1.3950968, y: 0.3471383, z: -0.06210335}
+    m_Value: {x: 2.9945436, y: 4.9440413, z: -0.1371034}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -967,9 +967,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 5.962426
+    m_Target: 14.03813
     speed: 2
-    m_Value: 5.962426
+    m_Value: 14.03813
   m_Ortho:
     m_Target: 1
     speed: 2

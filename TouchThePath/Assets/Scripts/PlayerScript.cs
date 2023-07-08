@@ -14,6 +14,7 @@ public class PlayerScript : MonoBehaviour
     internal float HandPrintLoadtime = 0f;
     public int HandPrintLimit;
     public float HandPrintInterval;
+    public float HandPrintAlphaDifference;
     
 
     void ShootHandPrint()
@@ -30,6 +31,10 @@ public class PlayerScript : MonoBehaviour
     void Awake()
     {
         rigidbody2 = GetComponent<Rigidbody2D>();
+
+        //Restore HandPrint Alpha Color
+        Color OriginalCol = Prefab_HandPrint.GetComponent<SpriteRenderer>().color;
+        Prefab_HandPrint.GetComponent<SpriteRenderer>().color = new Color(OriginalCol.r, OriginalCol.g, OriginalCol.b, 1f);
     }
 
 
@@ -41,6 +46,9 @@ public class PlayerScript : MonoBehaviour
         //Behavior: handPrint
         if(Input.GetAxis("Fire1") > 0 && HandPrintLoadtime <= 0f)
         {
+            //alter alpha value
+            Color OriginalCol = Prefab_HandPrint.GetComponent<SpriteRenderer>().color;
+            Prefab_HandPrint.GetComponent<SpriteRenderer>().color = new Color(OriginalCol.r, OriginalCol.g, OriginalCol.b, OriginalCol.a - HandPrintAlphaDifference);
             ShootHandPrint();
             HandPrintLoadtime = HandPrintInterval;
         }
