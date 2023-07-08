@@ -33,6 +33,8 @@ public class GameController : MonoBehaviour
 		treasure.transform.position = map.treasurePoint.position;
 
 		nightSprite.enabled = false;
+
+		AudioManager.Instance.PlayBgm(Sound.GameDayBGM);
 	}
 
 
@@ -47,6 +49,7 @@ public class GameController : MonoBehaviour
 			nightSprite.enabled = true;
 			nightSprite.DOFade(1f, nightFadeTime).OnComplete(() => treasure.gameObject.SetActive(false));
 		});
+		AudioManager.Instance.PlayBgm(Sound.GameNightBGM);
 	}
 
 	public void OnPlayerWin()
