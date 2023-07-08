@@ -12,19 +12,20 @@ public class PlayerScript : MonoBehaviour
 
     [Space]
     internal float HandPrintLoadtime = 0f;
-    public int HandPrintLimit;
+    public float HandPrintLimit;
     public float HandPrintInterval;
-    public float HandPrintAlphaDifference;
     
 
     void ShootHandPrint()
     {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")), 1);
-        
-        if(hit.collider != null)
+        Vector2 dir = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, 1);
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+
+        if (hit.collider != null)
         {
             //Initiate a handprint on wall
-            Instantiate(Prefab_HandPrint, hit.point, transform.rotation);//TO BE ALTERED
+            Instantiate(Prefab_HandPrint, hit.point, Quaternion.Euler(0f, 0f, angle));//TO BE ALTERED
         }
     }
 
@@ -34,7 +35,7 @@ public class PlayerScript : MonoBehaviour
 
         //Restore HandPrint Alpha Color
         Color OriginalCol = Prefab_HandPrint.GetComponent<SpriteRenderer>().color;
-        Prefab_HandPrint.GetComponent<SpriteRenderer>().color = new Color(OriginalCol.r, OriginalCol.g, OriginalCol.b, 1f);
+        Prefab_HandPrint.transform.GetComponent<SpriteRenderer>().color = new Color(OriginalCol.r, OriginalCol.g, OriginalCol.b, 1f);
     }
 
 
@@ -44,12 +45,12 @@ public class PlayerScript : MonoBehaviour
         rigidbody2.velocity = new Vector2(Input.GetAxis("Horizontal")*SpeedMultifier, Input.GetAxis("Vertical")*SpeedMultifier);
 
         //Behavior: handPrint
-        if(Input.GetAxis("Fire1") > 0 && HandPrintLoadtime <= 0f)
+        if(Input.GetAxis("Fire1") > 0 && HandPrintLoadtime <= 0f && Prefab_HandPrint.GetComponent<SpriteRenderer>().color.a > 0)
         {
             //alter alpha value
             Color OriginalCol = Prefab_HandPrint.GetComponent<SpriteRenderer>().color;
-            Prefab_HandPrint.GetComponent<SpriteRenderer>().color = new Color(OriginalCol.r, OriginalCol.g, OriginalCol.b, OriginalCol.a - HandPrintAlphaDifference);
             ShootHandPrint();
+            Prefab_HandPrint.GetComponent<SpriteRenderer>().color = new Color(OriginalCol.r, OriginalCol.g, OriginalCol.b, OriginalCol.a - (1f/HandPrintLimit));
             HandPrintLoadtime = HandPrintInterval;
         }
         else if(HandPrintLoadtime > 0f)

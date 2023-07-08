@@ -344,11 +344,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rigidbody2: {fileID: 0}
-  Prefab_HandPrint: {fileID: 5706320963106291071, guid: 957cf3a6039ca62439aee15bae20b637, type: 3}
+  Prefab_HandPrint: {fileID: 2751812760688240836, guid: 95d51e879d7ca4c46a4bee5ca754d66b, type: 3}
   SpeedMultifier: 2
-  HandPrintLimit: 5
-  HandPrintInterval: 0.5
-  HandPrintAlphaDifference: 0.05
+  HandPrintLimit: 10
+  HandPrintInterval: 1
 --- !u!1 &1237331076
 GameObject:
   m_ObjectHideFlags: 0
@@ -365,7 +364,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!156049354 &1237331077
 Grid:
   m_ObjectHideFlags: 0
