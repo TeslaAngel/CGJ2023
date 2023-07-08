@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
@@ -13,6 +13,17 @@ public class GameController : MonoBehaviour
 	public SpriteRenderer nightSprite;
 	public float nightFadeTime = 0.5f;
 
+
+	public GameObject handPrintPrefab;
+
+	List<HandPrint> handPrints;
+
+	public float HandPrintLightIntensity { get; private set; }
+
+
+	LevelMap currentMap;
+
+
 	// Use this for initialization
 	void Start()
 	{
@@ -26,6 +37,7 @@ public class GameController : MonoBehaviour
 
 		var mapObj = Instantiate(mapPrefab);
 		var map = mapObj.GetComponent<LevelMap>();
+		this.currentMap = map;
 
 		player.transform.position = map.playerSpawnPoint.position;
 		//player.transform.rotation = map.
@@ -33,8 +45,37 @@ public class GameController : MonoBehaviour
 		treasure.transform.position = map.treasurePoint.position;
 
 		nightSprite.enabled = false;
+		handPrints = new List<HandPrint>();
 
 		AudioManager.Instance.PlayBgm(Sound.GameDayBGM);
+	}
+
+
+	public bool CanAddHandPrint()
+	{
+		return handPrints.Count < currentMap.maxHandPrintCount;
+	}
+
+	public bool AddHandPrint(Vector3 position, float angle)
+	{
+		//Initiate a handprint on wall
+		var obj = Instantiate(handPrintPrefab, position, Quaternion.Euler(0f, 0f, angle - 90f));//TO BE ALTERED
+		var handprint = obj.GetComponent<HandPrint>();
+
+		float alpha = 1f - handPrints.Count / (float)currentMap.maxHandPrintCount;
+		handprint.SetDayStatus(alpha);
+		handPrints.Add(handprint);
+		//TODO: sfx
+
+		return true;
+	}
+
+	private void Update()
+	{
+		if (IsAtNight)
+		{
+			
+		}
 	}
 
 
@@ -48,7 +89,12 @@ public class GameController : MonoBehaviour
 		{
 			nightSprite.enabled = true;
 			nightSprite.DOFade(1f, nightFadeTime).OnComplete(() => treasure.gameObject.SetActive(false));
+			foreach (var handprint in handPrints)
+			{
+				handprint.SetNightStatus();
+			}
 		});
+
 		AudioManager.Instance.PlayBgm(Sound.GameNightBGM);
 	}
 

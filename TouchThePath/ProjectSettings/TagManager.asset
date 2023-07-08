@@ -50,6 +50,12 @@ TagManager:
   - name: Objects
     uniqueID: 1450792409
     locked: 0
+  - name: DarkMask
+    uniqueID: 1492496765
+    locked: 0
+  - name: HandPrint
+    uniqueID: 2516223073
+    locked: 0
   - name: Character
     uniqueID: 4260949779
     locked: 0

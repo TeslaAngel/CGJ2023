@@ -8,7 +8,7 @@ public class PlayerScript : MonoBehaviour
     //[HideInInspector]
     Rigidbody2D rigidbody2;
     Animator animator;
-    public GameObject Prefab_HandPrint;
+    //public GameObject Prefab_HandPrint;
     public float SpeedMultifier;
 
     [Space]
@@ -72,10 +72,6 @@ public class PlayerScript : MonoBehaviour
     {
         rigidbody2 = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-
-        //Restore HandPrint Alpha Color
-        Color OriginalCol = Prefab_HandPrint.GetComponent<SpriteRenderer>().color;
-        Prefab_HandPrint.transform.GetComponent<SpriteRenderer>().color = new Color(OriginalCol.r, OriginalCol.g, OriginalCol.b, 1f);
     }
 
 
@@ -119,7 +115,6 @@ public class PlayerScript : MonoBehaviour
         if (velocity.sqrMagnitude > 0.25f)
         {
             var direction = velocity.normalized;
-            Debug.Log(direction);
             MoveDirection facingDir = GetVectorDirecition(direction);
             if (facingDir != faceDirection)
             {
@@ -156,7 +151,7 @@ public class PlayerScript : MonoBehaviour
 			eyeBlinkSide.enabled = eyeClose;
 
         //Behavior: handPrint
-        if(Input.GetAxis("Fire1") > 0 && HandPrintLoadtime <= 0f && Prefab_HandPrint.GetComponent<SpriteRenderer>().color.a > 0)
+        if(Input.GetAxis("Fire1") > 0 && HandPrintLoadtime <= 0f && GameController.Instance.CanAddHandPrint())
         {
             //raycast
             Vector2 dir = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
@@ -165,16 +160,13 @@ public class PlayerScript : MonoBehaviour
             if (hit.collider != null)
             {
                 //Initiate a handprint on wall
-                CretateHandPrint(hit.point, angle);
+                GameController.Instance.AddHandPrint(hit.point, angle);
             }
             else
             {
                 return;
             }
 
-            //alter alpha value
-            Color OriginalCol = Prefab_HandPrint.GetComponent<SpriteRenderer>().color;
-            Prefab_HandPrint.GetComponent<SpriteRenderer>().color = new Color(OriginalCol.r, OriginalCol.g, OriginalCol.b, OriginalCol.a - (1f/HandPrintLimit));
             HandPrintLoadtime = HandPrintInterval;
         }
 
@@ -192,12 +184,4 @@ public class PlayerScript : MonoBehaviour
         }
         
     }
-
-    void CretateHandPrint(Vector3 position, float angle)
-    {
-		//Initiate a handprint on wall
-		Instantiate(Prefab_HandPrint, position, Quaternion.Euler(0f, 0f, angle));//TO BE ALTERED
-
-        //TODO: sfx
-	}
 }
