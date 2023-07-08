@@ -2,9 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BlackHoleScript : MonoBehaviour
+public class WhiteHoleScript : MonoBehaviour
 {
-
     public float AttractRadius;
     public Rigidbody2D Player;
     public float Power;
@@ -16,8 +15,7 @@ public class BlackHoleScript : MonoBehaviour
         {
             Vector2 pp = Player.position;
             Vector2 tp = transform.position;
-            Player.AddForce((tp - pp) * Power);
+            Player.AddForce((pp - tp) * Power);
         }
     }
-
 }
