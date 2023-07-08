@@ -148,10 +148,14 @@ public class GameController : MonoBehaviour
 		//TODO 显示失败界面
 		//失败音效
 		Debug.Log("Game Lose!");
-		SceneHelper.Instance.GotoStart();
-        AudioManager.Instance.PlayBgm(Sound.PlayerDied);
+		Invoke("PlayerDiedGoStart", 2);
+		
+        //AudioManager.Instance.PlayBgm(Sound.PlayerDied);
     }
 
-
+	private void PlayerDiedGoStart()
+	{
+        SceneHelper.Instance.GotoStart();
+    }
 
 }

@@ -199,7 +199,7 @@ public class PlayerScript : MonoBehaviour
     public void GetPunch()
     {
         controlable = false;
-		animator.Play("Player_Die");
+		animator.Play("Player_Died");
 		animator.speed = 1.0f;
 
 		//人物不能行走
@@ -207,8 +207,8 @@ public class PlayerScript : MonoBehaviour
 
 		//event...  (不是当前时间)
 		//{
-		//显示一个boom.png的特效
-		//人物被击飞
+		//显示一个boom.png的特效√
+		//人物被击飞√
 
 		Destroy(GetComponent<PlayerScript>());
 		GameController.Instance.OnPlayerDied();
@@ -218,10 +218,23 @@ public class PlayerScript : MonoBehaviour
     public void DropDown()
     {
 		controlable = false;
-		//人物螺旋着掉入深渊
+        //人物螺旋着掉入深渊√
+        animator.Play("Player_Drop");
 
-
-		GameController.Instance.OnPlayerDied();
+        GameController.Instance.OnPlayerDied();
 	}
 
+
+    /*
+     * AudioManager会循环播放音效，动画event会鬼畜 && 播放音效需要另挂脚本（因PlayerScript死亡时会被摧毁）
+    public void PlayInhaleAudio()
+    {
+        AudioManager.Instance.PlayBgm(Sound.PlayerInhale);
+    }
+
+    public void PlayPunchAudio()
+    {
+        AudioManager.Instance.PlayBgm(Sound.PlayerBeingHit);
+    }
+    */
 }

@@ -17,9 +17,11 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 6c1eb80ab40520648a11c9c375b859f7, type: 3}
   - sound: 2
     clip: {fileID: 8300000, guid: 23d907ce39bf5a3409f0f86ce8bde6bf, type: 3}
-  - sound: 100
+  - sound: 101
     clip: {fileID: 8300000, guid: 1bd9b1ffd58685f4f94b237e856171b7, type: 3}
   - sound: 100
     clip: {fileID: 8300000, guid: e08ccdf4aef60534d9a75c897b7ec011, type: 3}
   - sound: 102
     clip: {fileID: 8300000, guid: cd20010d1b72ae24ba2028845d1d2f90, type: 3}
+  - sound: 104
+    clip: {fileID: 8300000, guid: dfb6a937441a55940bbe03725483d151, type: 3}
