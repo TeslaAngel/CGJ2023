@@ -8,10 +8,10 @@ public class GameController : MonoBehaviour
 	public bool IsAtNight { get; private set; }
 
 	public GameObject player;
-	public GameObject treasure;
+	public TreasureScript treasure;
 
 	public SpriteRenderer nightSprite;
-	public float nightFadeTime = 1f;
+	public float nightFadeTime = 0.5f;
 
 	// Use this for initialization
 	void Start()
@@ -42,11 +42,11 @@ public class GameController : MonoBehaviour
 
 		//set daytime to night
 		IsAtNight = true;
-		nightSprite.enabled = true;
-		nightSprite.DOFade(1f, nightFadeTime);
-
-		//TODO： 播放动画
-		treasure.SetActive(false);
+		treasure.PlayInvokeAnimation(() =>
+		{
+			nightSprite.enabled = true;
+			nightSprite.DOFade(1f, nightFadeTime).OnComplete(() => treasure.gameObject.SetActive(false));
+		});
 	}
 
 	public void OnPlayerWin()

@@ -60,7 +60,7 @@ public class PlayerScript : MonoBehaviour
 
     static MoveDirection GetVectorDirecition(Vector2 v)
     {
-        if (Mathf.Abs(v.x) < Mathf.Abs(v.y))
+        if (Mathf.Abs(v.x) < Mathf.Abs(v.y) - 0.1f)
 			return v.y > 0 ? MoveDirection.Up : MoveDirection.Down;
         else
             return v.x > 0 ? MoveDirection.Right : MoveDirection.Left;

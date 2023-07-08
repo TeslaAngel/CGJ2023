@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,9 +12,29 @@ public static class GD
 
 public class TreasureScript : MonoBehaviour
 {
-    public SpriteRenderer nightSprite;
-    [Space]
-    public List<GameObject> Ghosts;
+    public Animator animator;
+    public CircleCollider2D circleCollider;
+
+    Action onInvokeAboutToFinished;
+
+    public void PlayInvokeAnimation(Action callback)
+    {
+        onInvokeAboutToFinished = callback;
+        circleCollider.enabled = false;
+        animator.Play("Gem_Invoke");
+	}
+
+    public void OnInvokeAboutToFinshed()
+    {
+        onInvokeAboutToFinished?.Invoke();
+	}
+
+
+
+
+	//public SpriteRenderer nightSprite;
+    //[Space]
+    //public List<GameObject> Ghosts;
 
     //private void Start()
     //{
