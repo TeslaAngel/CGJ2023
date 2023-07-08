@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using DG.Tweening;
+using System.Collections.Generic;
 
 public class GameController : MonoBehaviour
 {
@@ -13,8 +14,12 @@ public class GameController : MonoBehaviour
 	public SpriteRenderer nightSprite;
 	public float nightFadeTime = 0.5f;
 
-	// Use this for initialization
-	void Start()
+	[Space]
+	public List<GameObject> Ghosts;
+    public List<GameObject> FakeMountains;
+
+    // Use this for initialization
+    void Start()
 	{
 		Instance = this;
 
@@ -35,7 +40,19 @@ public class GameController : MonoBehaviour
 		nightSprite.enabled = false;
 
 		AudioManager.Instance.PlayBgm(Sound.GameDayBGM);
-	}
+
+
+        //Turn Ghosts inActive
+        foreach (GameObject ghost in Ghosts)
+        {
+            ghost.SetActive(false);
+        }
+		//Making Fakemountains Static
+		foreach (GameObject mount in FakeMountains)
+		{
+			mount.GetComponent<PathIndicator>().enabled = false;
+		}
+    }
 
 
 	public void OnTurnNight()
@@ -50,7 +67,18 @@ public class GameController : MonoBehaviour
 			nightSprite.DOFade(1f, nightFadeTime).OnComplete(() => treasure.gameObject.SetActive(false));
 		});
 		AudioManager.Instance.PlayBgm(Sound.GameNightBGM);
-	}
+
+		//Turn Ghosts Active
+		foreach (GameObject ghost in Ghosts)
+		{
+			ghost.SetActive(true);
+		}
+        //Making Fakemountains Dynamic
+        foreach (GameObject mount in FakeMountains)
+        {
+            mount.GetComponent<PathIndicator>().enabled = true;
+        }
+    }
 
 	public void OnPlayerWin()
 	{
@@ -66,7 +94,8 @@ public class GameController : MonoBehaviour
 		//失败音效
 		Debug.Log("Game Lose!");
 		SceneHelper.Instance.GotoStart();
-	}
+        AudioManager.Instance.PlayBgm(Sound.PlayerDied);
+    }
 
 
 
