@@ -1,0 +1,29 @@
+* [33mcommit 688fd95a571b337be84dc53f28eb0365b13e4e86[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+[31m|[m Author: TeslaAngel <3363154242@qq.com>
+[31m|[m Date:   Sat Jul 8 13:15:09 2023 +0800
+[31m|[m 
+[31m|[m     completing Handprint
+[31m|[m 
+* [33mcommit bd882da127ebf6e723ae2922951ba2a8cbde67a0[m
+[31m|[m Author: TeslaAngel <3363154242@qq.com>
+[31m|[m Date:   Sat Jul 8 11:27:19 2023 +0800
+[31m|[m 
+[31m|[m     initing handprint alpha difference
+[31m|[m 
+* [33mcommit 6dd33f29acb7b07bac85ce32b9e0dc6457c608b2[m
+[31m|[m Author: TeslaAngel <3363154242@qq.com>
+[31m|[m Date:   Sat Jul 8 10:53:26 2023 +0800
+[31m|[m 
+[31m|[m     initing player movement & handprints
+[31m|[m 
+* [33mcommit 1ede53a11151c42fce9110ab03a291b4a375df80[m
+[31m|[m Author: TeslaAngel <3363154242@qq.com>
+[31m|[m Date:   Fri Jul 7 22:09:07 2023 +0800
+[31m|[m 
+[31m|[m     initing tilemap
+[31m|[m 
+* [33mcommit b38016d54ac5000a72bb5507b29421c1dab08da1[m
+  Author: TeslaAngel <3363154242@qq.com>
+  Date:   Fri Jul 7 21:46:28 2023 +0800
+  
+      initing
