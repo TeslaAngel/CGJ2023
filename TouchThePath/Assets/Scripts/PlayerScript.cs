@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -14,6 +15,10 @@ public class PlayerScript : MonoBehaviour
     internal float HandPrintLoadtime = 0f;
     public float HandPrintLimit;
     public float HandPrintInterval;
+
+    [Space]
+    public bool ChaseByCamera;
+    public float CameraDrag;
 
     void Awake()
     {
@@ -58,5 +63,13 @@ public class PlayerScript : MonoBehaviour
         {
             HandPrintLoadtime -= Time.deltaTime;
         }
+
+        //Camera Chase
+        if (ChaseByCamera)
+        {
+            Vector3 targetPos = new Vector3(transform.position.x, transform.position.y, -10f);
+            Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, targetPos, Time.deltaTime * CameraDrag);
+        }
+        
     }
 }
