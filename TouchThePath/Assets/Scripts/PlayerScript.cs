@@ -1,13 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 
 public class PlayerScript : MonoBehaviour
 {
-    [HideInInspector]
-    public Rigidbody2D rigidbody2;
+    //[HideInInspector]
+    Rigidbody2D rigidbody2;
+    Animator animator;
     public GameObject Prefab_HandPrint;
     public float SpeedMultifier;
 
@@ -20,9 +20,58 @@ public class PlayerScript : MonoBehaviour
     public bool ChaseByCamera;
     public float CameraDrag;
 
+    [Space]
+    public Transform spritePivot;
+    public SpriteRenderer eyeBlinkDown;
+    public SpriteRenderer eyeBlinkSide;
+    public float eyeBlinkInterval = 3f;
+    public float eyeBlinkCloseTime = 0.2f;
+
+    public enum MoveDirection
+    {
+        None = 0,
+        Down,
+        Up,
+        Left,
+        Right,
+    }
+
+    static string GetWalkAnimationName(MoveDirection dir, out bool needTurn)
+    {
+        needTurn = false;
+		if (dir == MoveDirection.Up)
+		{
+			return "Player_Walk_Up";
+		}
+		else if (dir == MoveDirection.Down)
+		{
+			return "Player_Walk_Down";
+		}
+		else if (dir == MoveDirection.Right)
+		{
+			return "Player_Walk_Right";
+		}
+		else
+		{
+            needTurn = true;
+			return "Player_Walk_Right";
+		}
+	}
+
+    static MoveDirection GetVectorDirecition(Vector2 v)
+    {
+        if (Mathf.Abs(v.x) < Mathf.Abs(v.y))
+			return v.y > 0 ? MoveDirection.Up : MoveDirection.Down;
+        else
+            return v.x > 0 ? MoveDirection.Right : MoveDirection.Left;
+	}
+
+    MoveDirection faceDirection = MoveDirection.Down;
+
     void Awake()
     {
         rigidbody2 = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
 
         //Restore HandPrint Alpha Color
         Color OriginalCol = Prefab_HandPrint.GetComponent<SpriteRenderer>().color;
@@ -65,6 +114,47 @@ public class PlayerScript : MonoBehaviour
 
 	void Update()
     {
+        //根据方向控制动画
+        var velocity = rigidbody2.velocity;
+        if (velocity.sqrMagnitude > 0.25f)
+        {
+            var direction = velocity.normalized;
+            Debug.Log(direction);
+            MoveDirection facingDir = GetVectorDirecition(direction);
+            if (facingDir != faceDirection)
+            {
+                var isUpDown = facingDir == MoveDirection.Up || facingDir == MoveDirection.Down;
+                eyeBlinkSide.gameObject.SetActive(!isUpDown);
+                eyeBlinkDown.gameObject.SetActive(isUpDown);
+
+                string aniName = GetWalkAnimationName(facingDir, out var needTurn);
+				spritePivot.transform.eulerAngles = new Vector3(0, needTurn ? 180f : 0, 0);
+
+				animator.Play(aniName);
+                animator.speed = 1.0f;
+                faceDirection = facingDir;
+            }
+        }
+        else
+        {
+            if (faceDirection != MoveDirection.None)
+            {
+				string aniName = GetWalkAnimationName(faceDirection, out var needTurn);
+                animator.Play(aniName, 0, 0f);
+				animator.speed = 0.0f;
+				faceDirection = MoveDirection.None;
+			}
+        }
+
+        //眨眼
+        int eyeBlinkTimeIndex = (int)(Time.time / eyeBlinkInterval);
+        float eyeBlickTime = Time.time - (eyeBlinkTimeIndex * eyeBlinkInterval);
+        bool eyeClose = eyeBlickTime < eyeBlinkCloseTime;
+        if (eyeBlinkDown.enabled != eyeClose)
+            eyeBlinkDown.enabled = eyeClose;
+		if (eyeBlinkSide.enabled != eyeClose)
+			eyeBlinkSide.enabled = eyeClose;
+
         //Behavior: handPrint
         if(Input.GetAxis("Fire1") > 0 && HandPrintLoadtime <= 0f && Prefab_HandPrint.GetComponent<SpriteRenderer>().color.a > 0)
         {
