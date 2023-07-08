@@ -220,7 +220,7 @@ GameObject:
   - component: {fileID: 654680326}
   - component: {fileID: 654680325}
   - component: {fileID: 654680329}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -241,13 +241,13 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!58 &654680326
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -343,6 +343,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e821b9b572f311a4b92d8f5324473ce6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rigidbody2: {fileID: 0}
+  Prefab_HandPrint: {fileID: 5706320963106291071, guid: 957cf3a6039ca62439aee15bae20b637, type: 3}
+  SpeedMultifier: 2
+  HandPrintLimit: 5
+  HandPrintInterval: 0.5
 --- !u!1 &1237331076
 GameObject:
   m_ObjectHideFlags: 0
@@ -404,7 +409,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!212 &1492116483
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -488,7 +493,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!68 &1585867315
 EdgeCollider2D:
   m_ObjectHideFlags: 0
@@ -557,7 +562,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!68 &1701345352
 EdgeCollider2D:
   m_ObjectHideFlags: 0
