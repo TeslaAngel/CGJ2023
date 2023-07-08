@@ -17,6 +17,7 @@ public enum Sound
 
 	PlayerDied = 100,
 	PlayerDrop,
+	CreateHandPrint,
 
 	//添加在下面
 }

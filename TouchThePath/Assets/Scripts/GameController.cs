@@ -67,6 +67,11 @@ public class GameController : MonoBehaviour
     }
 
 
+	public void ActivateGhost()
+	{
+
+	}
+
 	public bool CanAddHandPrint()
 	{
 		return handPrints.Count < currentMap.maxHandPrintCount;
@@ -116,6 +121,7 @@ public class GameController : MonoBehaviour
 		//Turn Ghosts Active
 		foreach (GameObject ghost in Ghosts)
 		{
+			//Invoke()
 			ghost.SetActive(true);
 		}
         //Making Fakemountains Dynamic
