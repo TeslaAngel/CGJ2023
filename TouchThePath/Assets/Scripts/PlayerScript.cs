@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 
 public class PlayerScript : MonoBehaviour
@@ -33,19 +33,38 @@ public class PlayerScript : MonoBehaviour
     //Death when touch wall at night
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (GD.toNight)
+        var objTag = collision.gameObject.tag;
+
+        if (GameController.Instance.IsAtNight)
         {
-            //Bad ending
-            Destroy(GetComponent<PlayerScript>());
+			if (objTag == "Door")
+            {
+                GameController.Instance.OnPlayerWin();
+            }
+            else if (objTag == "Wall")
+            {
+				//Bad ending
+				Destroy(GetComponent<PlayerScript>());
+				GameController.Instance.OnPlayerDied();
+			}
         }
+        else
+        {
+			if (objTag == "Treasure")
+			{
+				GameController.Instance.OnTurnNight();
+			}
+		}
     }
 
+	private void FixedUpdate()
+	{
+		//Behavior: move
+		rigidbody2.velocity = new Vector2(Input.GetAxis("Horizontal") * SpeedMultifier, Input.GetAxis("Vertical") * SpeedMultifier);
+	}
 
-    void Update()
+	void Update()
     {
-        //Behavior: move
-        rigidbody2.velocity = new Vector2(Input.GetAxis("Horizontal")*SpeedMultifier, Input.GetAxis("Vertical")*SpeedMultifier);
-
         //Behavior: handPrint
         if(Input.GetAxis("Fire1") > 0 && HandPrintLoadtime <= 0f && Prefab_HandPrint.GetComponent<SpriteRenderer>().color.a > 0)
         {
@@ -56,7 +75,7 @@ public class PlayerScript : MonoBehaviour
             if (hit.collider != null)
             {
                 //Initiate a handprint on wall
-                Instantiate(Prefab_HandPrint, hit.point, Quaternion.Euler(0f, 0f, angle));//TO BE ALTERED
+                CretateHandPrint(hit.point, angle);
             }
             else
             {
@@ -83,4 +102,12 @@ public class PlayerScript : MonoBehaviour
         }
         
     }
+
+    void CretateHandPrint(Vector3 position, float angle)
+    {
+		//Initiate a handprint on wall
+		Instantiate(Prefab_HandPrint, position, Quaternion.Euler(0f, 0f, angle));//TO BE ALTERED
+
+        //TODO: sfx
+	}
 }

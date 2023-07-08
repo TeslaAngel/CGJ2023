@@ -5,6 +5,7 @@ using UnityEngine;
 public class DoorObject : MonoBehaviour
 {
 	public float selectedScale = 1.5f;
+	public string levelMapName;
 	const float speed = 8f;
 
 	bool selected = false;
