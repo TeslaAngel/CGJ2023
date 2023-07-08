@@ -355,7 +355,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &1223078618
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -729,14 +729,6 @@ PrefabInstance:
     - target: {fileID: 5533610730291682209, guid: 2241de505c08ec2499c752cb61d3074e, type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 5533610730291682210, guid: 2241de505c08ec2499c752cb61d3074e, type: 3}
-      propertyPath: m_SortingLayer
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 5533610730291682210, guid: 2241de505c08ec2499c752cb61d3074e, type: 3}
-      propertyPath: m_SortingLayerID
-      value: -2144931453
       objectReference: {fileID: 0}
     - target: {fileID: 5533610730291682221, guid: 2241de505c08ec2499c752cb61d3074e, type: 3}
       propertyPath: m_RootOrder
