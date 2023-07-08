@@ -13,6 +13,10 @@ public class GameController : MonoBehaviour
 	public SpriteRenderer nightSprite;
 	public float nightFadeTime = 0.5f;
 
+	[Space]
+	public List<GameObject> Ghosts;
+    public List<GameObject> FakeMountains;
+
 
 	public GameObject handPrintPrefab;
 
@@ -48,7 +52,19 @@ public class GameController : MonoBehaviour
 		handPrints = new List<HandPrint>();
 
 		AudioManager.Instance.PlayBgm(Sound.GameDayBGM);
-	}
+
+
+        //Turn Ghosts inActive
+        foreach (GameObject ghost in Ghosts)
+        {
+            ghost.SetActive(false);
+        }
+		//Making Fakemountains Static
+		foreach (GameObject mount in FakeMountains)
+		{
+			mount.GetComponent<PathIndicator>().enabled = false;
+		}
+    }
 
 
 	public bool CanAddHandPrint()
@@ -96,7 +112,18 @@ public class GameController : MonoBehaviour
 		});
 
 		AudioManager.Instance.PlayBgm(Sound.GameNightBGM);
-	}
+
+		//Turn Ghosts Active
+		foreach (GameObject ghost in Ghosts)
+		{
+			ghost.SetActive(true);
+		}
+        //Making Fakemountains Dynamic
+        foreach (GameObject mount in FakeMountains)
+        {
+            mount.GetComponent<PathIndicator>().enabled = true;
+        }
+    }
 
 	public void OnPlayerWin()
 	{
@@ -112,7 +139,8 @@ public class GameController : MonoBehaviour
 		//失败音效
 		Debug.Log("Game Lose!");
 		SceneHelper.Instance.GotoStart();
-	}
+        AudioManager.Instance.PlayBgm(Sound.PlayerDied);
+    }
 
 
 
