@@ -14,8 +14,8 @@ public class GameController : MonoBehaviour
 	public float nightFadeTime = 0.5f;
 
 	[Space]
-	public List<GameObject> Ghosts;
-    public List<GameObject> FakeMountains;
+	List<GameObject> Ghosts;
+    List<GameObject> FakeMountains;
 
 
 	public GameObject handPrintPrefab;
@@ -25,7 +25,7 @@ public class GameController : MonoBehaviour
 	//定义了手掌[0(第一个), 1(最后一个)]对应的alpha 
 	public AnimationCurve handPrintAlphaCurve;
 
-	LevelMap currentMap;
+	public LevelMap currentMap;
 
 
 	// Use this for initialization
@@ -33,22 +33,31 @@ public class GameController : MonoBehaviour
 	{
 		Instance = this;
 
-		//var levelId = SceneHelper.Instance.toLoadLevel;
-		var mapName = SceneHelper.Instance.toLoadLevelMapName;
-		if (string.IsNullOrEmpty(mapName))
-			mapName = "1";
-		var mapPrefab = Resources.Load<GameObject>("Prefabs/Map/Map_" + mapName);
+		if (currentMap == null)
+		{
+			var mapName = SceneHelper.Instance.toLoadLevelMapName;
+			var mapPrefab = Resources.Load<GameObject>("Prefabs/Map/Map_" + mapName);
+			var mapObj = Instantiate(mapPrefab);
+			var map = mapObj.GetComponent<LevelMap>();
+			this.currentMap = map;
+		}
 
-		var mapObj = Instantiate(mapPrefab);
-		var map = mapObj.GetComponent<LevelMap>();
-		this.currentMap = map;
+		if (player != null)
+		{
+			player.transform.position = currentMap.playerSpawnPoint.position;
+			//player.transform.rotation = map.
+		}
 
-		player.transform.position = map.playerSpawnPoint.position;
-		//player.transform.rotation = map.
+		if (treasure != null)
+		{
+			treasure.transform.position = currentMap.treasurePoint.position;
+		}
 
-		treasure.transform.position = map.treasurePoint.position;
-
-		nightSprite.enabled = false;
+		if (nightSprite != null)
+		{
+			nightSprite.enabled = false;
+		}
+		
 		handPrints = new List<HandPrint>();
 
 		AudioManager.Instance.PlayBgm(Sound.GameDayBGM);

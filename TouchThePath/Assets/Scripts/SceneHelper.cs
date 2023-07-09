@@ -49,10 +49,10 @@ public class SceneHelper : MonoBehaviour
 		FadeLoadScene("level_select");
 	}
 
-	public void GotoStart()
-	{
-		FadeLoadScene("start");
-	}
+	//public void GotoStart()
+	//{
+	//	FadeLoadScene("start");
+	//}
 
 
 

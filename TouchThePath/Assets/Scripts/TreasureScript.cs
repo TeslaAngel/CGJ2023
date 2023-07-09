@@ -7,6 +7,8 @@ public static class GD
 {
     //public static bool toNight = false;
     //后续可用来保存手印数据
+
+    public static bool haveTouchTitle = false;
 }
 
 

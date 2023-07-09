@@ -13,6 +13,9 @@ public class DoorObject : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (!GD.haveTouchTitle)
+            return;
+
         if (collision.tag == "Player")
         {
 			//Door: Call desinated scene switch

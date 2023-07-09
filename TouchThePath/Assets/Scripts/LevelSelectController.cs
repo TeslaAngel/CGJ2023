@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using DG.Tweening;
 
 public static class UnlockedLevels
 {
@@ -10,6 +12,7 @@ public static class UnlockedLevels
 
 public class LevelSelectController : MonoBehaviour
 {
+    public Canvas canvas;
 
 	//public DoorObject[] doors;
 	int selectingDoorIndex = -1;
@@ -25,6 +28,11 @@ public class LevelSelectController : MonoBehaviour
 	{
 		cam = Camera.main;
 		layerMask = LayerMask.GetMask("Interact");
+
+		if (GD.haveTouchTitle)
+		{
+			canvas.gameObject.SetActive(false);
+		}
 	}
 
 
@@ -37,4 +45,17 @@ public class LevelSelectController : MonoBehaviour
             SceneHelper.Instance.GotoGameLevel(levelMapName);
         }
     }
+
+
+	void Update()
+	{
+		if (Input.GetAxis("Fire1") > 0)
+		{
+			GD.haveTouchTitle = true;
+			canvas.GetComponent<CanvasGroup>().DOFade(0f, 1f).OnComplete(() =>
+			{
+				canvas.gameObject.SetActive(false);
+			});
+		}
+	}
 }
