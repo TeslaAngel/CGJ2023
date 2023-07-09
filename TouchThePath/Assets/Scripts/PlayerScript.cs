@@ -18,9 +18,6 @@ public class PlayerScript : MonoBehaviour
     public float handPrintDistance = 1.0f;
     int handPrintLayerMask;
 
-    [Space]
-    public bool ChaseByCamera;
-    public float CameraDrag;
 
     [Space]
     public Transform spritePivot;
@@ -35,7 +32,7 @@ public class PlayerScript : MonoBehaviour
 	MoveDirection faceDirection = MoveDirection.Down;
 	MoveDirection moveDirection = MoveDirection.Down;
     bool isHandOut = false;
-	bool isPrinting = false;
+	bool isPlayingAnimationHandOut = false;
 
 	public enum MoveDirection
     {
@@ -154,21 +151,12 @@ public class PlayerScript : MonoBehaviour
 
 	void Update()
     {
-		//if (Input.GetKeyDown(KeyCode.Alpha1))
-		//	GetPunch();
-
-		//Camera Chase
-		if (ChaseByCamera)
-		{
-			Vector3 targetPos = new Vector3(transform.position.x, transform.position.y, -10f);
-			Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, targetPos, Time.deltaTime * CameraDrag);
-		}
 
 		//Behavior: handPrint
 		//长按时持续伸手
 		if (Input.GetAxis("Fire1") > 0)
 		{
-			if (!isHandOut && HandPrintLoadtime <= 0f  && GameController.Instance.CanAddHandPrint())
+			if (!isHandOut && HandPrintLoadtime <= 0f && GameController.Instance.CanAddHandPrint())
 			{
 				//raycast
 				//Vector2 dir = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
@@ -178,24 +166,17 @@ public class PlayerScript : MonoBehaviour
 				if (hit.collider != null)
 				{
 					//Initiate a handprint on wall
+					HandPrintLoadtime = HandPrintInterval;
 					GameController.Instance.AddHandPrint(hit.point, hit.normal, hit.transform);
-					isPrinting = true;
-					StartPutHand();
-
 				}
-				else
-				{
-					return;
-				}
-
-				HandPrintLoadtime = HandPrintInterval;
 			}
+			StartPutHand();
+			return;
 		}
 		else
 		{
-			if (isHandOut && isPrinting)
+			if (isHandOut && !isPlayingAnimationHandOut)
 			{
-				isPrinting = false;
 				EndPutHand();
 			}
 		}
@@ -256,8 +237,16 @@ public class PlayerScript : MonoBehaviour
 
     void DoGetTreasure()
     {
-        StartPutHand();
-        Invoke(nameof(EndPutHand), 1f);
+		StartCoroutine(IE_GetTreasure());
+	}
+
+	IEnumerator IE_GetTreasure()
+	{
+		isPlayingAnimationHandOut = true;
+		StartPutHand();
+		yield return new WaitForSeconds(1f);
+		EndPutHand();
+		isPlayingAnimationHandOut = false;
 	}
 
 

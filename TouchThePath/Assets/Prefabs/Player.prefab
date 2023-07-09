@@ -630,7 +630,7 @@ MonoBehaviour:
   SpeedMultifier: 3
   HandPrintLimit: 10
   HandPrintInterval: 1
-  handPrintDistance: 1
+  handPrintDistance: 0.6
   ChaseByCamera: 1
   CameraDrag: 2
   spritePivot: {fileID: 607282417}

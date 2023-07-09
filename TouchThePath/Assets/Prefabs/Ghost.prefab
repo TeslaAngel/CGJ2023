@@ -201,7 +201,8 @@ GameObject:
   - component: {fileID: 6437491091219549788}
   - component: {fileID: 6437491091219549789}
   - component: {fileID: 6437491091219549794}
-  - component: {fileID: 6437491091219549795}
+  - component: {fileID: 2533147865409986067}
+  - component: {fileID: 6851029014481814903}
   m_Layer: 0
   m_Name: Ghost
   m_TagString: Wall
@@ -262,8 +263,22 @@ MonoBehaviour:
   Des1: {x: 0, y: 0}
   Des2: {x: -3.5, y: 1.5}
   Speed: 1
---- !u!58 &6437491091219549795
-CircleCollider2D:
+--- !u!114 &2533147865409986067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6437491091219549791}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 422b8f34c0386564b83a764cfb5e88c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eye: {fileID: 6437491090100102060}
+  body: {fileID: 6437491090322058806}
+--- !u!70 &6851029014481814903
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -275,6 +290,6 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.07, y: -0.06}
-  serializedVersion: 2
-  m_Radius: 0.5
+  m_Offset: {x: 0.12742008, y: -0.22184032}
+  m_Size: {x: 0.8869457, y: 0.9488951}
+  m_Direction: 0

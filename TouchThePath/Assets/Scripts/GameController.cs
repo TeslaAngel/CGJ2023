@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.UIElements;
 
 public class GameController : MonoBehaviour
 {
@@ -14,8 +15,14 @@ public class GameController : MonoBehaviour
 	public float nightFadeTime = 0.5f;
 
 	[Space]
-	List<GameObject> Ghosts;
-    List<GameObject> FakeMountains;
+	//public bool ChaseByCamera;
+	public float CameraDrag;
+	public Transform followTarget;
+	Camera mainCamera;
+
+	[Space]
+	List<Ghost> ghosts;
+    List<GameObject> fakeMountains;
 
 
 	public GameObject handPrintPrefab;
@@ -32,10 +39,12 @@ public class GameController : MonoBehaviour
 	void Start()
 	{
 		Instance = this;
+		mainCamera = Camera.main;
 
 		if (currentMap == null)
 		{
 			var mapName = SceneHelper.Instance.toLoadLevelMapName;
+			mapName = string.IsNullOrEmpty(mapName) ? "1" : mapName;
 			var mapPrefab = Resources.Load<GameObject>("Prefabs/Map/Map_" + mapName);
 			var mapObj = Instantiate(mapPrefab);
 			var map = mapObj.GetComponent<LevelMap>();
@@ -51,6 +60,7 @@ public class GameController : MonoBehaviour
 		if (treasure != null)
 		{
 			treasure.transform.position = currentMap.treasurePoint.position;
+			mainCamera.transform.position = treasure.transform.position - new Vector3(0, 0, 10f);
 		}
 
 		if (nightSprite != null)
@@ -62,20 +72,22 @@ public class GameController : MonoBehaviour
 
 		AudioManager.Instance.PlayBgm(Sound.GameDayBGM);
 
-		Ghosts = currentMap.Ghosts;
-        FakeMountains = currentMap.FakeMountains;
 
-
-        //Turn Ghosts inActive
-        foreach (GameObject ghost in Ghosts)
-        {
-            ghost.SetActive(false);
-        }
-		//Making Fakemountains Static
-		foreach (GameObject mount in FakeMountains)
+		ghosts = new List<Ghost>();
+		//Turn Ghosts inActive
+		foreach (GameObject ghost in currentMap.Ghosts)
 		{
-			//mount.GetComponent<PathIndicator>().enabled = false;
+			var g = ghost.GetComponent<Ghost>();
+			g.HideInstant();
+			ghosts.Add(g);
 		}
+
+		fakeMountains = currentMap.FakeMountains;
+		//Making Fakemountains Static
+		//foreach (GameObject mount in fakeMountains)
+		//{
+		//	//mount.GetComponent<PathIndicator>().enabled = false;
+		//}
     }
 
 
@@ -109,15 +121,22 @@ public class GameController : MonoBehaviour
 
 	private void Update()
 	{
-		if (IsAtNight)
-		{
-			
-		}
-
 		if (Input.GetKeyDown(KeyCode.Escape))
 		{
 			Application.Quit();
 		}
+
+
+		//if (Input.GetKeyDown(KeyCode.Alpha1))
+		//	GetPunch();
+
+		//Camera Chase
+		if (followTarget != null)
+		{
+			Vector3 targetPos = new Vector3(followTarget.position.x, followTarget.position.y, -10f);
+			mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, targetPos, Time.deltaTime * CameraDrag);
+		}
+	
 	}
 
 
@@ -135,21 +154,20 @@ public class GameController : MonoBehaviour
 			{
 				handprint.SetNightStatus();
 			}
+
+			//Turn Ghosts Active
+			foreach (var ghost in ghosts)
+			{
+				ghost.Show();
+			}
+			//Making Fakemountains Dynamic
+			//foreach (GameObject mount in FakeMountains)
+			//{
+			//    //mount.GetComponent<PathIndicator>().enabled = true;
+			//}
 		});
 
 		AudioManager.Instance.PlayBgm(Sound.GameNightBGM);
-
-		//Turn Ghosts Active
-		foreach (GameObject ghost in Ghosts)
-		{
-			//Invoke()
-			ghost.SetActive(true);
-		}
-        //Making Fakemountains Dynamic
-        foreach (GameObject mount in FakeMountains)
-        {
-            //mount.GetComponent<PathIndicator>().enabled = true;
-        }
     }
 
 	public void OnPlayerWin()
