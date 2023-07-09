@@ -153,6 +153,11 @@ public class GameController : MonoBehaviour
 		Debug.Log("Game Win!");
 		SceneHelper.Instance.GotoLevelSelect();
 		UnlockedLevels.LevelUnlocked++;
+
+		if (UnlockedLevels.LevelUnlocked > 3)
+		{
+			SceneHelper.Instance.GotoGoodEnd();
+		}
 	}
 
 
