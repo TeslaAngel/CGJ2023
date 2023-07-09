@@ -130,9 +130,23 @@ public class PlayerScript : MonoBehaviour
 	private void FixedUpdate()
 	{
         if (!controlable)
-            controlDirection = Vector2.zero;
+		{
+			controlDirection = Vector2.zero;
+		}
         else
-			controlDirection = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+		{
+			//float inputX = Input.GetAxis("Horizontal");
+			//float inputY = Input.GetAxis("Vertical");
+			float inputX = Input.GetKey(KeyCode.A) ? -1 : Input.GetKey(KeyCode.D) ? 1 : 0;
+			float inputY = Input.GetKey(KeyCode.S) ? -1 : Input.GetKey(KeyCode.W) ? 1 : 0;
+			inputX = Mathf.Sign(inputX) * (Mathf.Abs(inputX) > 0.9f ? 1.0f : 0f);
+			inputY = Mathf.Sign(inputY) * (Mathf.Abs(inputY) > 0.9f ? 1.0f : 0f);
+			controlDirection = new Vector2(inputX, inputY);
+			if (inputX != 0 || inputY != 0)
+			{
+				controlDirection.Normalize();
+			}
+		}
 
 		//Behavior: move
         rigidbody2.velocity = controlDirection * SpeedMultifier;
@@ -193,7 +207,7 @@ public class PlayerScript : MonoBehaviour
 		if (controlable)
         {
 			//根据方向控制动画
-			if (Mathf.Abs(controlDirection.x) > 0.1f || Mathf.Abs(controlDirection.y) > 0.1f)
+			if (controlDirection.x != 0 || controlDirection.y != 0)
 			{
 				//var direction = controlDirection.normalized;
 				var direction = controlDirection;
