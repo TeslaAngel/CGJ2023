@@ -65,7 +65,7 @@ public class GameController : MonoBehaviour
 		//Making Fakemountains Static
 		foreach (GameObject mount in FakeMountains)
 		{
-			mount.GetComponent<PathIndicator>().enabled = false;
+			//mount.GetComponent<PathIndicator>().enabled = false;
 		}
     }
 
@@ -143,6 +143,7 @@ public class GameController : MonoBehaviour
 		//TODO 显示小关成功界面 宝石发光之类的？
 		Debug.Log("Game Win!");
 		SceneHelper.Instance.GotoLevelSelect();
+		UnlockedLevels.LevelUnlocked++;
 	}
 
 

@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 106697910}
   - component: {fileID: 106697912}
   m_Layer: 9
-  m_Name: DoorDectector_1
+  m_Name: DoorDectector_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -149,14 +149,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 106697907}
-  m_LocalRotation: {x: -0, y: -0, z: 0.2588191, w: 0.9659258}
+  m_LocalRotation: {x: -0, y: -0, z: 0.87275594, w: 0.48815688}
   m_LocalPosition: {x: -4.1, y: -2.62, z: 0.07215589}
   m_LocalScale: {x: 0.5995903, y: 2.0603034, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 696597509}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 30}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 121.561}
 --- !u!61 &106697910
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -181,7 +181,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2.13, y: 1.18}
+  m_Size: {x: 2.13, y: 0.88}
   m_EdgeRadius: 0
 --- !u!212 &106697911
 SpriteRenderer:
@@ -247,9 +247,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9762e13637f477a45b2fcaf1410a8fd2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Index: 1
+  Index: 2
   levelMapName: 2
   selectController: {fileID: 1167143193}
+  PortalEffect: {fileID: 1247867974339877155, guid: 1299a6e6c443ee74fa218cd9ab56c101, type: 3}
 --- !u!1 &293619900
 GameObject:
   m_ObjectHideFlags: 0
@@ -583,7 +584,7 @@ GameObject:
   - component: {fileID: 889877040}
   - component: {fileID: 889877042}
   m_Layer: 9
-  m_Name: DoorDectector_0
+  m_Name: DoorDectector_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -596,14 +597,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 889877037}
-  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
+  m_LocalRotation: {x: -0, y: -0, z: 0.99990726, w: -0.013621049}
   m_LocalPosition: {x: -0.13, y: 4.24, z: 0.07215589}
   m_LocalScale: {x: 0.5995903, y: 2.0603034, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 696597509}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 181.561}
 --- !u!61 &889877040
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -628,7 +629,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2.13, y: 1.18}
+  m_Size: {x: 2.13, y: 0.88}
   m_EdgeRadius: 0
 --- !u!212 &889877041
 SpriteRenderer:
@@ -697,6 +698,7 @@ MonoBehaviour:
   Index: 1
   levelMapName: 1
   selectController: {fileID: 1167143193}
+  PortalEffect: {fileID: 1247867974339877155, guid: 1299a6e6c443ee74fa218cd9ab56c101, type: 3}
 --- !u!1 &909201364
 GameObject:
   m_ObjectHideFlags: 0
@@ -1006,7 +1008,7 @@ GameObject:
   - component: {fileID: 1472984801}
   - component: {fileID: 1472984803}
   m_Layer: 9
-  m_Name: DoorDectector_2
+  m_Name: DoorDectector_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1019,14 +1021,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1472984798}
-  m_LocalRotation: {x: 0, y: 0, z: -0.258819, w: 0.9659259}
+  m_LocalRotation: {x: -0, y: -0, z: 0.51175034, w: 0.85913426}
   m_LocalPosition: {x: 4.11, y: -2.57, z: 0.07215589}
   m_LocalScale: {x: 0.5995903, y: 2.0603034, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 696597509}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -30}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 61.561}
 --- !u!61 &1472984801
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1051,7 +1053,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2.13, y: 1.18}
+  m_Size: {x: 2.13, y: 0.88}
   m_EdgeRadius: 0
 --- !u!212 &1472984802
 SpriteRenderer:
@@ -1117,9 +1119,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9762e13637f477a45b2fcaf1410a8fd2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Index: 2
+  Index: 3
   levelMapName: 3
   selectController: {fileID: 1167143193}
+  PortalEffect: {fileID: 1247867974339877155, guid: 1299a6e6c443ee74fa218cd9ab56c101, type: 3}
 --- !u!1 &1579556872
 GameObject:
   m_ObjectHideFlags: 0
