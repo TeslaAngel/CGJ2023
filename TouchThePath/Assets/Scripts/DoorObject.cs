@@ -8,46 +8,7 @@ public class DoorObject : MonoBehaviour
 	public int Index;
 	public string levelMapName;
 	public LevelSelectController selectController;
-	//const float speed = 8f;
-
-	//bool selected = false;
-	//float scale = 1f;
-	//Vector3 initialScale;
-	//Coroutine coroutine;
-
-    /*
-	public void PlayAnimation(bool selected)
-	{
-		if (this.selected == selected)
-			return;
-		this.selected = selected;
-
-		if (coroutine != null)
-		{
-			StopCoroutine(coroutine);
-		}
-		coroutine = StartCoroutine(IE_Animation(selected ? selectedScale : 1f));
-	}
-
-	IEnumerator IE_Animation(float targetScale)
-	{
-		while (Mathf.Abs(targetScale - scale) > 0.02f)
-		{
-			scale += (targetScale - scale) * Time.deltaTime * speed;
-			transform.localScale = initialScale * scale;
-			yield return null;
-		}
-		scale = targetScale;
-		transform.localScale = initialScale * scale;
-	}
-
-
-	// Start is called before the first frame update
-	void Start()
-	{
-		initialScale = transform.localScale;
-	}
-	*/
+	public GameObject PortalEffect;
 
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -57,6 +18,19 @@ public class DoorObject : MonoBehaviour
 			//Door: Call desinated scene switch
 			selectController.toScene(Index, levelMapName);
 			print("to");
+        }
+    }
+
+    private void Start()
+    {
+        if (Index != UnlockedLevels.LevelUnlocked)
+        {
+
+            Destroy(GetComponent<DoorObject>());
+        }
+        else
+        {
+            Instantiate(PortalEffect, transform.position, transform.rotation);
         }
     }
 }
