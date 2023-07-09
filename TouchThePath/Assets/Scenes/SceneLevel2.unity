@@ -898,7 +898,7 @@ MonoBehaviour:
   nightFadeTime: 0.5
   Ghosts: []
   FakeMountains: []
-  handPrintPrefab: {fileID: 0}
+  handPrintPrefab: {fileID: 2751812760688240836, guid: 95d51e879d7ca4c46a4bee5ca754d66b, type: 3}
   handPrintAlphaCurve:
     serializedVersion: 2
     m_Curve: []

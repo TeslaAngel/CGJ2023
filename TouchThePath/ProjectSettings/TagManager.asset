@@ -7,6 +7,7 @@ TagManager:
   - Door
   - Wall
   - Treasure
+  - Chasm
   layers:
   - Default
   - TransparentFX

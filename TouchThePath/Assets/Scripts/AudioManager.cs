@@ -20,6 +20,8 @@ public enum Sound
 	PlayerDrop,
 	CreateHandPrint,
     PlayerBeingHit,
+	PlayerWalk1,
+	PlayerWalk2,
 
 	//添加在下面
 }

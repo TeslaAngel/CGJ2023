@@ -13,4 +13,16 @@ public class AudioPlayerForPlayer : MonoBehaviour
     {
         AudioManager.Instance.PlaySfx(Sound.PlayerBeingHit);
     }
+
+    /*
+    public void PlayWalkAudio1()
+    {
+        AudioManager.Instance.PlaySfx(Sound.PlayerWalk1);
+    }
+    */
+
+    public void PlayWalkAudio2()
+    {
+        AudioManager.Instance.PlaySfx(Sound.PlayerWalk2);
+    }
 }

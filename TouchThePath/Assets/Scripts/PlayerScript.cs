@@ -78,6 +78,15 @@ public class PlayerScript : MonoBehaviour
     }
 
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "Chasm")
+        {
+            DropDown();
+        }
+    }
+
+
     //Death when touch wall at night
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -171,6 +180,7 @@ public class PlayerScript : MonoBehaviour
             {
                 //Initiate a handprint on wall
                 GameController.Instance.AddHandPrint(hit.point, hit.normal);
+                AudioManager.Instance.PlaySfx(Sound.CreateHandPrint);
             }
             else
             {
@@ -220,7 +230,9 @@ public class PlayerScript : MonoBehaviour
 		controlable = false;
         //人物螺旋着掉入深渊√
         animator.Play("Player_Drop");
+        animator.speed = 1.0f;
 
+        Destroy(GetComponent<PlayerScript>());
         GameController.Instance.OnPlayerDied();
 	}
 
