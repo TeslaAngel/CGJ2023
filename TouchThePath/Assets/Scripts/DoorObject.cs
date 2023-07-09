@@ -4,16 +4,18 @@ using UnityEngine;
 
 public class DoorObject : MonoBehaviour
 {
-	public float selectedScale = 1.5f;
+	//public float selectedScale = 1.5f;
+	public int Index;
 	public string levelMapName;
-	const float speed = 8f;
+	public LevelSelectController selectController;
+	//const float speed = 8f;
 
-	bool selected = false;
-	float scale = 1f;
-	Vector3 initialScale;
-	Coroutine coroutine;
+	//bool selected = false;
+	//float scale = 1f;
+	//Vector3 initialScale;
+	//Coroutine coroutine;
 
-
+    /*
 	public void PlayAnimation(bool selected)
 	{
 		if (this.selected == selected)
@@ -45,4 +47,16 @@ public class DoorObject : MonoBehaviour
 	{
 		initialScale = transform.localScale;
 	}
+	*/
+
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "Player")
+        {
+			//Door: Call desinated scene switch
+			selectController.toScene(Index, levelMapName);
+			print("to");
+        }
+    }
 }

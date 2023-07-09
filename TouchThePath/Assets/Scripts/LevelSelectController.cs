@@ -6,28 +6,41 @@ using UnityEngine;
 public class LevelSelectController : MonoBehaviour
 {
 
-	public DoorObject[] doors;
+	//public DoorObject[] doors;
 	int selectingDoorIndex = -1;
 
 	Camera cam;
 	int layerMask;
 
-	//public Action<int> OnSelectLevel;
+    //public Action<int> OnSelectLevel;
 
 
-	// Start is called before the first frame update
-	void Start()
+    // Start is called before the first frame update
+    void Start()
 	{
 		cam = Camera.main;
 		layerMask = LayerMask.GetMask("Interact");
 	}
 
+
+	public void toScene(int i, string levelMapName)
+	{
+        Debug.Log("Click Level " + i);
+        
+        if (!string.IsNullOrEmpty(levelMapName))
+        {
+            SceneHelper.Instance.GotoGameLevel(levelMapName);
+        }
+    }
+
 	// Update is called once per frame
 	void Update()
 	{
-		//鼠标选中检测
+        //鼠标选中检测
+        /*
 		var pos = (Vector2)cam.ScreenToWorldPoint(Input.mousePosition);
 		var col = Physics2D.OverlapPoint(pos, layerMask);
+
 		//Debug.Log(col);
 		if (col != null && col.gameObject.name.StartsWith("DoorDectector_"))
 		{
@@ -52,10 +65,12 @@ public class LevelSelectController : MonoBehaviour
 			doors[selectingDoorIndex].PlayAnimation(false);
 			selectingDoorIndex = -1;
 		}
+		*/
 
 
-		//选择关卡
-		if (selectingDoorIndex != -1)
+        //选择关卡
+        /*
+        if (selectingDoorIndex != -1)
 		{
 			if (Input.GetMouseButtonDown(0))
 			{
@@ -69,6 +84,10 @@ public class LevelSelectController : MonoBehaviour
 				}
 			}
 		}
+		*/
 
-	}
+        //选择关卡
+        
+
+    }
 }

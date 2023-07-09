@@ -92,7 +92,7 @@ public class PlayerScript : MonoBehaviour
     {
         var objTag = collision.gameObject.tag;
 
-        if (GameController.Instance.IsAtNight)
+        if (GameController.Instance && GameController.Instance.IsAtNight)
         {
 			if (objTag == "Door")
             {
@@ -170,7 +170,7 @@ public class PlayerScript : MonoBehaviour
 			eyeBlinkSide.enabled = eyeClose;
 
         //Behavior: handPrint
-        if(Input.GetAxis("Fire1") > 0 && HandPrintLoadtime <= 0f && GameController.Instance.CanAddHandPrint())
+        if(Input.GetAxis("Fire1") > 0 && HandPrintLoadtime <= 0f && GameController.Instance && GameController.Instance.CanAddHandPrint())
         {
             //raycast
             Vector2 dir = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
