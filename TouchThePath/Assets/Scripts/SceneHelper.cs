@@ -55,6 +55,10 @@ public class SceneHelper : MonoBehaviour
 	}
 
 
+	public void GotoGoodEnd()
+	{
+		FadeLoadScene("GoodEnd");
+	}
 
 	public Image fadeMask;
 	public float fadeTime = 0.7f;
