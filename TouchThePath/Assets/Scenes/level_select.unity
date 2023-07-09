@@ -416,7 +416,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Index: 1
-  levelMapName: SampleScene
+  levelMapName: 2
   selectController: {fileID: 1167143193}
 --- !u!1 &279085992
 GameObject:
@@ -1724,7 +1724,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Index: 2
-  levelMapName: SampleScene
+  levelMapName: 3
   selectController: {fileID: 1167143193}
 --- !u!1 &1579556872
 GameObject:
