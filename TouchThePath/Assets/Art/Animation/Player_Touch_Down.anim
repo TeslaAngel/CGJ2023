@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Player_Walk_Right
+  m_Name: Player_Touch_Down
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -20,15 +20,9 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: 21300000, guid: 62a5bb98561c5b349b3424990e325cee, type: 3}
+      value: {fileID: 21300000, guid: de2578f600c0a054796d929e0ee749ad, type: 3}
     - time: 0.16666667
-      value: {fileID: 21300000, guid: c99c37409f2aac04da72f52b54b44dc4, type: 3}
-    - time: 0.33333334
-      value: {fileID: 21300000, guid: 62a5bb98561c5b349b3424990e325cee, type: 3}
-    - time: 0.5
-      value: {fileID: 21300000, guid: c715677f0385d2749ab3bd789ef75759, type: 3}
-    - time: 0.6666667
-      value: {fileID: 21300000, guid: 62a5bb98561c5b349b3424990e325cee, type: 3}
+      value: {fileID: 21300000, guid: de2578f600c0a054796d929e0ee749ad, type: 3}
     attribute: m_Sprite
     path: SpritePivot/BodySprite
     classID: 212
@@ -48,17 +42,14 @@ AnimationClip:
       customType: 23
       isPPtrCurve: 1
     pptrCurveMapping:
-    - {fileID: 21300000, guid: 62a5bb98561c5b349b3424990e325cee, type: 3}
-    - {fileID: 21300000, guid: c99c37409f2aac04da72f52b54b44dc4, type: 3}
-    - {fileID: 21300000, guid: 62a5bb98561c5b349b3424990e325cee, type: 3}
-    - {fileID: 21300000, guid: c715677f0385d2749ab3bd789ef75759, type: 3}
-    - {fileID: 21300000, guid: 62a5bb98561c5b349b3424990e325cee, type: 3}
+    - {fileID: 21300000, guid: de2578f600c0a054796d929e0ee749ad, type: 3}
+    - {fileID: 21300000, guid: de2578f600c0a054796d929e0ee749ad, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.68333334
+    m_StopTime: 0.18333334
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -79,14 +70,7 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0.16666667
-    functionName: PlayWalkAudio2
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 0.5
-    functionName: PlayWalkAudio2
+    functionName: AnimationEvent_OnHandPrintFinish
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
