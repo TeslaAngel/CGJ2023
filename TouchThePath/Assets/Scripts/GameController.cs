@@ -74,7 +74,7 @@ public class GameController : MonoBehaviour
 
 	public bool CanAddHandPrint()
 	{
-		return handPrints.Count < currentMap.maxHandPrintCount;
+		return !IsAtNight && handPrints.Count < currentMap.maxHandPrintCount;
 	}
 
 	public bool AddHandPrint(Vector3 position, Vector2 hitPointNormal, Transform intendedParent)
@@ -148,6 +148,11 @@ public class GameController : MonoBehaviour
 		//TODO 显示失败界面
 		//失败音效
 		Debug.Log("Game Lose!");
+
+
+		nightSprite.enabled = true;
+		nightSprite.DOFade(0.5f, nightFadeTime);
+
 		Invoke("PlayerDiedGoStart", 2);
 		
         //AudioManager.Instance.PlayBgm(Sound.PlayerDied);
