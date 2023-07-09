@@ -77,7 +77,7 @@ public class GameController : MonoBehaviour
 
 	public bool CanAddHandPrint()
 	{
-		return handPrints.Count < currentMap.maxHandPrintCount;
+		return !IsAtNight && handPrints.Count < currentMap.maxHandPrintCount;
 	}
 
 	public bool AddHandPrint(Vector3 position, Vector2 hitPointNormal, Transform intendedParent)
@@ -157,6 +157,11 @@ public class GameController : MonoBehaviour
 		//TODO 显示失败界面
 		//失败音效
 		Debug.Log("Game Lose!");
+
+
+		nightSprite.enabled = true;
+		nightSprite.DOFade(0.5f, nightFadeTime);
+
 		Invoke("PlayerDiedGoStart", 2);
 		
         //AudioManager.Instance.PlayBgm(Sound.PlayerDied);
@@ -164,7 +169,33 @@ public class GameController : MonoBehaviour
 
 	private void PlayerDiedGoStart()
 	{
-        SceneHelper.Instance.GotoStart();
+        SceneHelper.Instance.GotoLevelSelect();
     }
+
+
+	public void ShowMonsterEyes(Vector2 position)
+	{
+		var prefab = Resources.Load<GameObject>("Prefabs/Objects/MonsterEye");
+
+		int count = Random.Range(8, 12);
+		for (int i = 0; i < count; i++)
+		{
+			var size = Random.Range(0.5f, 2f);
+			if (Random.value < 0.1f)
+				size *= 3;
+
+			Vector2 offset = Random.insideUnitCircle;
+			offset.x *= 2;
+			offset = (5f * Mathf.Pow(offset.magnitude, 3) + 1f) * offset.normalized;
+
+			var go = Instantiate(prefab);
+			go.transform.position = position + offset;
+			go.transform.localScale = size * Vector3.one;
+
+			var sp = go.GetComponent<SpriteRenderer>();
+			sp.color = new Color(1, 1, 1, 0);
+			sp.DOFade(1f, 0.5f).SetDelay(Random.Range(0, 0.2f));
+		}
+	}
 
 }

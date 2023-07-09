@@ -15,6 +15,8 @@ public class PlayerScript : MonoBehaviour
     internal float HandPrintLoadtime = 0f;
     public float HandPrintLimit;
     public float HandPrintInterval;
+    public float handPrintDistance = 1.0f;
+    int handPrintLayerMask;
 
     [Space]
     public bool ChaseByCamera;
@@ -23,7 +25,8 @@ public class PlayerScript : MonoBehaviour
     [Space]
     public Transform spritePivot;
     public SpriteRenderer eyeBlinkDown;
-    public SpriteRenderer eyeBlinkSide;
+    public SpriteRenderer eyeBlinkSideL;
+    public SpriteRenderer eyeBlinkSideR;
     public float eyeBlinkInterval = 3f;
     public float eyeBlinkCloseTime = 0.2f;
 
@@ -31,6 +34,8 @@ public class PlayerScript : MonoBehaviour
     Vector2 controlDirection;
 	MoveDirection faceDirection = MoveDirection.Down;
 	MoveDirection moveDirection = MoveDirection.Down;
+    bool isHandOut = false;
+	bool isPrinting = false;
 
 	public enum MoveDirection
     {
@@ -78,7 +83,9 @@ public class PlayerScript : MonoBehaviour
     {
         rigidbody2 = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-    }
+        handPrintLayerMask = LayerMask.GetMask("Wall");
+
+	}
 
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -114,6 +121,7 @@ public class PlayerScript : MonoBehaviour
         {
 			if (objTag == "Treasure")
 			{
+                DoGetTreasure();
 				GameController.Instance.OnTurnNight();
 			}
 		}
@@ -122,9 +130,23 @@ public class PlayerScript : MonoBehaviour
 	private void FixedUpdate()
 	{
         if (!controlable)
-            controlDirection = Vector2.zero;
+		{
+			controlDirection = Vector2.zero;
+		}
         else
-			controlDirection = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+		{
+			//float inputX = Input.GetAxis("Horizontal");
+			//float inputY = Input.GetAxis("Vertical");
+			float inputX = Input.GetKey(KeyCode.A) ? -1 : Input.GetKey(KeyCode.D) ? 1 : 0;
+			float inputY = Input.GetKey(KeyCode.S) ? -1 : Input.GetKey(KeyCode.W) ? 1 : 0;
+			inputX = Mathf.Sign(inputX) * (Mathf.Abs(inputX) > 0.9f ? 1.0f : 0f);
+			inputY = Mathf.Sign(inputY) * (Mathf.Abs(inputY) > 0.9f ? 1.0f : 0f);
+			controlDirection = new Vector2(inputX, inputY);
+			if (inputX != 0 || inputY != 0)
+			{
+				controlDirection.Normalize();
+			}
+		}
 
 		//Behavior: move
         rigidbody2.velocity = controlDirection * SpeedMultifier;
@@ -132,6 +154,9 @@ public class PlayerScript : MonoBehaviour
 
 	void Update()
     {
+		//if (Input.GetKeyDown(KeyCode.Alpha1))
+		//	GetPunch();
+
 		//Camera Chase
 		if (ChaseByCamera)
 		{
@@ -139,110 +164,135 @@ public class PlayerScript : MonoBehaviour
 			Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, targetPos, Time.deltaTime * CameraDrag);
 		}
 
-        //不能控制, 不播放行走动画
-		if (!controlable)
-        {
-            return;
-        }
+		//Behavior: handPrint
+		//长按时持续伸手
+		if (Input.GetAxis("Fire1") > 0)
+		{
+			if (!isHandOut && HandPrintLoadtime <= 0f  && GameController.Instance.CanAddHandPrint())
+			{
+				//raycast
+				//Vector2 dir = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+				Vector2 dir = GetDirecitionVector(faceDirection);
+				RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, handPrintDistance, handPrintLayerMask);
+				//float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+				if (hit.collider != null)
+				{
+					//Initiate a handprint on wall
+					GameController.Instance.AddHandPrint(hit.point, hit.normal, hit.transform);
+					isPrinting = true;
+					StartPutHand();
 
-        //根据方向控制动画
-        if (Mathf.Abs(controlDirection.x) > 0.1f || Mathf.Abs(controlDirection.y) > 0.1f)
-        {
-            //var direction = controlDirection.normalized;
-            var direction = controlDirection;
-			MoveDirection dir = GetVectorDirecition(direction);
-            if (dir != moveDirection)
-            {
-                var isUpDown = dir == MoveDirection.Up || dir == MoveDirection.Down;
-                eyeBlinkSide.gameObject.SetActive(!isUpDown);
-                eyeBlinkDown.gameObject.SetActive(isUpDown);
+				}
+				else
+				{
+					return;
+				}
 
-                string aniName = GetWalkAnimationName(dir);
-				//spritePivot.transform.eulerAngles = new Vector3(0, needTurn ? 180f : 0, 0);
-
-				animator.Play(aniName);
-                animator.speed = 1.0f;
-                faceDirection = dir;
-                moveDirection = dir;
+				HandPrintLoadtime = HandPrintInterval;
 			}
-        }
-        else
-        {
-            if (moveDirection != MoveDirection.None)
-            {
-				string aniName = GetWalkAnimationName(faceDirection);
-				animator.Play(aniName, 0, 0f);
-				animator.speed = 0.0f;
-                moveDirection = MoveDirection.None;
+		}
+		else
+		{
+			if (isHandOut && isPrinting)
+			{
+				isPrinting = false;
+				EndPutHand();
 			}
-        }
+		}
 
-        //眨眼
-        int eyeBlinkTimeIndex = (int)(Time.time / eyeBlinkInterval);
-        float eyeBlickTime = Time.time - (eyeBlinkTimeIndex * eyeBlinkInterval);
-        bool eyeClose = eyeBlickTime < eyeBlinkCloseTime;
-        if (eyeBlinkDown.enabled != eyeClose)
-            eyeBlinkDown.enabled = eyeClose;
-		if (eyeBlinkSide.enabled != eyeClose)
-			eyeBlinkSide.enabled = eyeClose;
+		//timer for handprint
+		if (HandPrintLoadtime > 0f)
+		{
+			HandPrintLoadtime -= Time.deltaTime;
+		}
 
-        //Behavior: handPrint
-        if(Input.GetAxis("Fire1") > 0 && HandPrintLoadtime <= 0f && GameController.Instance && GameController.Instance.CanAddHandPrint())
+		//不能控制, 不播放行走动画
+		if (controlable)
         {
-            //raycast
-            //Vector2 dir = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-            Vector2 dir = GetDirecitionVector(faceDirection);
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, 1);
-            float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-            if (hit.collider != null)
-            {
-                //Initiate a handprint on wall
-                GameController.Instance.AddHandPrint(hit.point, hit.normal, hit.transform);
-                DoHandPrint();
-				
-            }
-            else
-            {
-                return;
-            }
+			//根据方向控制动画
+			if (controlDirection.x != 0 || controlDirection.y != 0)
+			{
+				//var direction = controlDirection.normalized;
+				var direction = controlDirection;
+				MoveDirection dir = GetVectorDirecition(direction);
+				if (dir != moveDirection)
+				{
+					//eyeBlinkSideL.gameObject.SetActive(dir == MoveDirection.Left);
+					//eyeBlinkSideR.gameObject.SetActive(dir == MoveDirection.Right);
+					//eyeBlinkDown.gameObject.SetActive(dir == MoveDirection.Down);
 
-            HandPrintLoadtime = HandPrintInterval;
-        }
+					string aniName = GetWalkAnimationName(dir);
+					//spritePivot.transform.eulerAngles = new Vector3(0, needTurn ? 180f : 0, 0);
 
-        //timer for handprint
-        if(HandPrintLoadtime > 0f)
-        {
-            HandPrintLoadtime -= Time.deltaTime;
-        }
+					animator.Play(aniName);
+					animator.speed = 1.0f;
+					faceDirection = dir;
+					moveDirection = dir;
+				}
+			}
+			else
+			{
+				if (moveDirection != MoveDirection.None)
+				{
+					string aniName = GetWalkAnimationName(faceDirection);
+					animator.Play(aniName, 0, 0f);
+					animator.speed = 0.0f;
+					moveDirection = MoveDirection.None;
+				}
+			}
+
+			//眨眼
+			int eyeBlinkTimeIndex = (int)(Time.time / eyeBlinkInterval);
+			float eyeBlickTime = Time.time - (eyeBlinkTimeIndex * eyeBlinkInterval);
+			bool eyeClose = eyeBlickTime < eyeBlinkCloseTime;
+			if (eyeBlinkDown.enabled != eyeClose)
+				eyeBlinkDown.enabled = eyeClose;
+			if (eyeBlinkSideL.enabled != eyeClose)
+				eyeBlinkSideL.enabled = eyeClose;
+			if (eyeBlinkSideR.enabled != eyeClose)
+				eyeBlinkSideR.enabled = eyeClose;
+		}
     }
 
-    void DoHandPrint()
+    void DoGetTreasure()
     {
-        string aniName;
-        if (faceDirection == MoveDirection.Up)
-            aniName = "Player_Touch_Up";
-        else if (faceDirection == MoveDirection.Down)
-            aniName = "Player_Touch_Down";
-        else if (faceDirection == MoveDirection.Left)
-            aniName = "Player_Touch_Left";
-        else if (faceDirection == MoveDirection.Right)
-            aniName = "Player_Touch_Right";
+        StartPutHand();
+        Invoke(nameof(EndPutHand), 1f);
+	}
+
+
+    void StartPutHand()
+    {
+		string aniName;
+		if (faceDirection == MoveDirection.Up)
+			aniName = "Player_Touch_Up";		
+		else if (faceDirection == MoveDirection.Left)
+			aniName = "Player_Touch_Left";
+		else if (faceDirection == MoveDirection.Right)
+			aniName = "Player_Touch_Right";
         else
-            aniName = "Wrong";
+			aniName = "Player_Touch_Down";
 
 		animator.Play(aniName);
-		animator.speed = 1.0f;
-        controlable = false;
-        controlDirection = Vector2.zero;
+        animator.speed = 0f;
+		controlable = false;
+		controlDirection = Vector2.zero;
 
-		AudioManager.Instance.PlaySfx(Sound.CreateHandPrint);
+		eyeBlinkSideL.gameObject.SetActive(false);
+		eyeBlinkSideR.gameObject.SetActive(false);
+		eyeBlinkDown.gameObject.SetActive(false);
+
+		isHandOut = true;
 	}
 
-    //动画回调
-    public void AnimationEvent_OnHandPrintFinish()
+
+    void EndPutHand()
     {
-		controlable = true;
+        controlable = true;
+        isHandOut = false;
+        moveDirection = MoveDirection.Down;  //临时
 	}
+
 
 
     public void GetPunch()
@@ -251,17 +301,9 @@ public class PlayerScript : MonoBehaviour
 		animator.Play("Player_Died");
 		animator.speed = 1.0f;
 
-		//人物不能行走
-		//显示惊讶特效
-
-		//event...  (不是当前时间)
-		//{
-		//显示一个boom.png的特效√
-		//人物被击飞√
-
 		Destroy(GetComponent<PlayerScript>());
+		GameController.Instance.ShowMonsterEyes(transform.position);
 		GameController.Instance.OnPlayerDied();
-        //}
 	}
 
     public void DropDown()
