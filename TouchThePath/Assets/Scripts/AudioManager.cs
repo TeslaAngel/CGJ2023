@@ -22,6 +22,7 @@ public enum Sound
     PlayerBeingHit,
 	PlayerWalk1,
 	PlayerWalk2,
+	FakeMountain,
 
 	//添加在下面
 }
