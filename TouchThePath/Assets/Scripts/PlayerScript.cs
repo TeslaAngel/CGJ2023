@@ -154,6 +154,9 @@ public class PlayerScript : MonoBehaviour
 
 	void Update()
     {
+		//if (Input.GetKeyDown(KeyCode.Alpha1))
+		//	GetPunch();
+
 		//Camera Chase
 		if (ChaseByCamera)
 		{
@@ -214,9 +217,9 @@ public class PlayerScript : MonoBehaviour
 				MoveDirection dir = GetVectorDirecition(direction);
 				if (dir != moveDirection)
 				{
-					eyeBlinkSideL.gameObject.SetActive(dir == MoveDirection.Left);
-					eyeBlinkSideR.gameObject.SetActive(dir == MoveDirection.Right);
-					eyeBlinkDown.gameObject.SetActive(dir == MoveDirection.Down);
+					//eyeBlinkSideL.gameObject.SetActive(dir == MoveDirection.Left);
+					//eyeBlinkSideR.gameObject.SetActive(dir == MoveDirection.Right);
+					//eyeBlinkDown.gameObject.SetActive(dir == MoveDirection.Down);
 
 					string aniName = GetWalkAnimationName(dir);
 					//spritePivot.transform.eulerAngles = new Vector3(0, needTurn ? 180f : 0, 0);
@@ -254,7 +257,7 @@ public class PlayerScript : MonoBehaviour
     void DoGetTreasure()
     {
         StartPutHand();
-        Invoke(nameof(EndPutHand), 0.3f);
+        Invoke(nameof(EndPutHand), 1f);
 	}
 
 
@@ -299,6 +302,7 @@ public class PlayerScript : MonoBehaviour
 		animator.speed = 1.0f;
 
 		Destroy(GetComponent<PlayerScript>());
+		GameController.Instance.ShowMonsterEyes(transform.position);
 		GameController.Instance.OnPlayerDied();
 	}
 
