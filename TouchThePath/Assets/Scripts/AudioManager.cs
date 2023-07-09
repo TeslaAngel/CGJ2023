@@ -24,6 +24,8 @@ public enum Sound
 	PlayerWalk2,
 	FakeMountain,
 
+	InvokeGem
+
 	//添加在下面
 }
 

@@ -114,7 +114,7 @@ public class GameController : MonoBehaviour
 		float alpha = handPrintAlphaCurve.Evaluate(t);
 		handprint.SetDayStatus(alpha);
 		handPrints.Add(handprint);
-		//TODO: sfx
+		AudioManager.Instance.PlaySfx(Sound.CreateHandPrint);
 
 		return true;
 	}
@@ -167,27 +167,44 @@ public class GameController : MonoBehaviour
 			//}
 		});
 
+		AudioManager.Instance.PlaySfx(Sound.InvokeGem);
 		AudioManager.Instance.PlayBgm(Sound.GameNightBGM);
     }
 
 	public void OnPlayerWin()
 	{
+		nightSprite.enabled = true;
+		nightSprite.DOFade(0.5f, nightFadeTime / 2);
+
 		//TODO 显示小关成功界面 宝石发光之类的？
 		Debug.Log("Game Win!");
 		UnlockedLevels.LevelUnlocked++;
-
 		if (UnlockedLevels.LevelUnlocked > 3)
 		{
 			SceneHelper.Instance.GotoGoodEnd();
 		}
 		else
 		{
-            SceneHelper.Instance.GotoLevelSelect();
-        }
+			SceneHelper.Instance.GotoLevelSelect();
+		}
+
+		//Invoke(nameof(PlayerWinGotoScene), nightFadeTime);
 	}
 
+	//private void PlayerWinGotoScene()
+	//{
+	//	if (UnlockedLevels.LevelUnlocked > 3)
+	//	{
+	//		SceneHelper.Instance.GotoGoodEnd();
+	//	}
+	//	else
+	//	{
+	//		SceneHelper.Instance.GotoLevelSelect();
+	//	}
+	//}
 
-	public void OnPlayerDied()
+
+	public void OnPlayerDied(float delay)
 	{
 		//TODO 显示失败界面
 		//失败音效
@@ -197,7 +214,7 @@ public class GameController : MonoBehaviour
 		nightSprite.enabled = true;
 		nightSprite.DOFade(0.5f, nightFadeTime);
 
-		Invoke("PlayerDiedGoStart", 2);
+		Invoke(nameof(PlayerDiedGoStart), delay);
 		
         //AudioManager.Instance.PlayBgm(Sound.PlayerDied);
     }

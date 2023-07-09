@@ -630,9 +630,7 @@ MonoBehaviour:
   SpeedMultifier: 3
   HandPrintLimit: 10
   HandPrintInterval: 1
-  handPrintDistance: 0.6
-  ChaseByCamera: 1
-  CameraDrag: 2
+  handPrintDistance: 0.8
   spritePivot: {fileID: 607282417}
   eyeBlinkDown: {fileID: 1859992088}
   eyeBlinkSideL: {fileID: 5666925694113721227}

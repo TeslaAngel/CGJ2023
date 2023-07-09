@@ -290,9 +290,9 @@ public class PlayerScript : MonoBehaviour
 		animator.Play("Player_Died");
 		animator.speed = 1.0f;
 
-		Destroy(GetComponent<PlayerScript>());
 		GameController.Instance.ShowMonsterEyes(transform.position);
-		GameController.Instance.OnPlayerDied();
+		GameController.Instance.OnPlayerDied(2f);
+		Destroy(GetComponent<PlayerScript>());
 	}
 
     public void DropDown()
@@ -303,7 +303,8 @@ public class PlayerScript : MonoBehaviour
         animator.speed = 1.0f;
 
         Destroy(GetComponent<PlayerScript>());
-        GameController.Instance.OnPlayerDied();
+        GameController.Instance.OnPlayerDied(1f);
+		AudioManager.Instance.PlaySfx(Sound.PlayerDrop);
 	}
 
 
