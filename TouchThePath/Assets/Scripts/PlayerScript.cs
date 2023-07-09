@@ -27,10 +27,12 @@ public class PlayerScript : MonoBehaviour
     public float eyeBlinkInterval = 3f;
     public float eyeBlinkCloseTime = 0.2f;
 
-    Vector2 controlDirection;
     bool controlable = true;
+    Vector2 controlDirection;
+	MoveDirection faceDirection = MoveDirection.Down;
+	MoveDirection moveDirection = MoveDirection.Down;
 
-    public enum MoveDirection
+	public enum MoveDirection
     {
         None = 0,
         Down,
@@ -39,26 +41,16 @@ public class PlayerScript : MonoBehaviour
         Right,
     }
 
-    static string GetWalkAnimationName(MoveDirection dir, out bool needTurn)
+    static string GetWalkAnimationName(MoveDirection dir)
     {
-        needTurn = false;
 		if (dir == MoveDirection.Up)
-		{
 			return "Player_Walk_Up";
-		}
-		else if (dir == MoveDirection.Down)
-		{
-			return "Player_Walk_Down";
-		}
-		else if (dir == MoveDirection.Right)
-		{
+		else if (dir == MoveDirection.Left)
+			return "Player_Walk_Left";
+        else if (dir == MoveDirection.Right)
 			return "Player_Walk_Right";
-		}
 		else
-		{
-            needTurn = true;
-			return "Player_Walk_Right";
-		}
+			return "Player_Walk_Down";
 	}
 
     static MoveDirection GetVectorDirecition(Vector2 v)
@@ -68,8 +60,19 @@ public class PlayerScript : MonoBehaviour
         else
             return v.x > 0 ? MoveDirection.Right : MoveDirection.Left;
 	}
-
-    MoveDirection faceDirection = MoveDirection.Down;
+	static Vector2 GetDirecitionVector(MoveDirection dir)
+	{
+        if (dir == MoveDirection.Down)
+            return Vector2.down;
+        else if (dir == MoveDirection.Up)
+            return Vector2.up;
+        else if (dir == MoveDirection.Left)
+            return Vector2.left;
+        else if (dir == MoveDirection.Right)
+            return Vector2.right;
+        else
+            return Vector2.zero;
+	}
 
     void Awake()
     {
@@ -129,34 +132,48 @@ public class PlayerScript : MonoBehaviour
 
 	void Update()
     {
+		//Camera Chase
+		if (ChaseByCamera)
+		{
+			Vector3 targetPos = new Vector3(transform.position.x, transform.position.y, -10f);
+			Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, targetPos, Time.deltaTime * CameraDrag);
+		}
+
+        //不能控制, 不播放行走动画
+		if (!controlable)
+        {
+            return;
+        }
+
         //根据方向控制动画
         if (Mathf.Abs(controlDirection.x) > 0.1f || Mathf.Abs(controlDirection.y) > 0.1f)
         {
             //var direction = controlDirection.normalized;
             var direction = controlDirection;
-            MoveDirection facingDir = GetVectorDirecition(direction);
-            if (facingDir != faceDirection)
+			MoveDirection dir = GetVectorDirecition(direction);
+            if (dir != moveDirection)
             {
-                var isUpDown = facingDir == MoveDirection.Up || facingDir == MoveDirection.Down;
+                var isUpDown = dir == MoveDirection.Up || dir == MoveDirection.Down;
                 eyeBlinkSide.gameObject.SetActive(!isUpDown);
                 eyeBlinkDown.gameObject.SetActive(isUpDown);
 
-                string aniName = GetWalkAnimationName(facingDir, out var needTurn);
-				spritePivot.transform.eulerAngles = new Vector3(0, needTurn ? 180f : 0, 0);
+                string aniName = GetWalkAnimationName(dir);
+				//spritePivot.transform.eulerAngles = new Vector3(0, needTurn ? 180f : 0, 0);
 
 				animator.Play(aniName);
                 animator.speed = 1.0f;
-                faceDirection = facingDir;
-            }
+                faceDirection = dir;
+                moveDirection = dir;
+			}
         }
         else
         {
-            if (faceDirection != MoveDirection.None)
+            if (moveDirection != MoveDirection.None)
             {
-				string aniName = GetWalkAnimationName(faceDirection, out var needTurn);
-                animator.Play(aniName, 0, 0f);
+				string aniName = GetWalkAnimationName(faceDirection);
+				animator.Play(aniName, 0, 0f);
 				animator.speed = 0.0f;
-				faceDirection = MoveDirection.None;
+                moveDirection = MoveDirection.None;
 			}
         }
 
@@ -173,14 +190,16 @@ public class PlayerScript : MonoBehaviour
         if(Input.GetAxis("Fire1") > 0 && HandPrintLoadtime <= 0f && GameController.Instance && GameController.Instance.CanAddHandPrint())
         {
             //raycast
-            Vector2 dir = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+            //Vector2 dir = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+            Vector2 dir = GetDirecitionVector(faceDirection);
             RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, 1);
             float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
             if (hit.collider != null)
             {
                 //Initiate a handprint on wall
                 GameController.Instance.AddHandPrint(hit.point, hit.normal, hit.transform);
-                AudioManager.Instance.PlaySfx(Sound.CreateHandPrint);
+                DoHandPrint();
+				
             }
             else
             {
@@ -195,15 +214,35 @@ public class PlayerScript : MonoBehaviour
         {
             HandPrintLoadtime -= Time.deltaTime;
         }
-
-        //Camera Chase
-        if (ChaseByCamera)
-        {
-            Vector3 targetPos = new Vector3(transform.position.x, transform.position.y, -10f);
-            Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, targetPos, Time.deltaTime * CameraDrag);
-        }
-        
     }
+
+    void DoHandPrint()
+    {
+        string aniName;
+        if (faceDirection == MoveDirection.Up)
+            aniName = "Player_Touch_Up";
+        else if (faceDirection == MoveDirection.Down)
+            aniName = "Player_Touch_Down";
+        else if (faceDirection == MoveDirection.Left)
+            aniName = "Player_Touch_Left";
+        else if (faceDirection == MoveDirection.Right)
+            aniName = "Player_Touch_Right";
+        else
+            aniName = "Wrong";
+
+		animator.Play(aniName);
+		animator.speed = 1.0f;
+        controlable = false;
+        controlDirection = Vector2.zero;
+
+		AudioManager.Instance.PlaySfx(Sound.CreateHandPrint);
+	}
+
+    //动画回调
+    public void AnimationEvent_OnHandPrintFinish()
+    {
+		controlable = true;
+	}
 
 
     public void GetPunch()
