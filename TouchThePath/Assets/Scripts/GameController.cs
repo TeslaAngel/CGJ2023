@@ -53,6 +53,9 @@ public class GameController : MonoBehaviour
 
 		AudioManager.Instance.PlayBgm(Sound.GameDayBGM);
 
+		Ghosts = currentMap.Ghosts;
+        FakeMountains = currentMap.FakeMountains;
+
 
         //Turn Ghosts inActive
         foreach (GameObject ghost in Ghosts)
@@ -131,7 +134,7 @@ public class GameController : MonoBehaviour
         //Making Fakemountains Dynamic
         foreach (GameObject mount in FakeMountains)
         {
-            mount.GetComponent<PathIndicator>().enabled = true;
+            //mount.GetComponent<PathIndicator>().enabled = true;
         }
     }
 
