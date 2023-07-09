@@ -77,13 +77,13 @@ public class GameController : MonoBehaviour
 		return handPrints.Count < currentMap.maxHandPrintCount;
 	}
 
-	public bool AddHandPrint(Vector3 position, Vector2 hitPointNormal)
+	public bool AddHandPrint(Vector3 position, Vector2 hitPointNormal, Transform intendedParent)
 	{
 		//Initiate a handprint on wall
 		//var rotation = Quaternion.Euler(0f, 0f, angle - 90f);
 		var rotation = Quaternion.LookRotation(Vector3.back, -hitPointNormal);
 
-		var obj = Instantiate(handPrintPrefab, position, rotation);
+		var obj = Instantiate(handPrintPrefab, position, rotation, intendedParent);
 		var handprint = obj.GetComponent<HandPrint>();
 
 		float t = handPrints.Count / (float)currentMap.maxHandPrintCount;

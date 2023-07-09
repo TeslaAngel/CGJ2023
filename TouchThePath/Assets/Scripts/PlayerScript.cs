@@ -179,7 +179,7 @@ public class PlayerScript : MonoBehaviour
             if (hit.collider != null)
             {
                 //Initiate a handprint on wall
-                GameController.Instance.AddHandPrint(hit.point, hit.normal);
+                GameController.Instance.AddHandPrint(hit.point, hit.normal, hit.transform);
                 AudioManager.Instance.PlaySfx(Sound.CreateHandPrint);
             }
             else
