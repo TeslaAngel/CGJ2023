@@ -113,6 +113,11 @@ public class GameController : MonoBehaviour
 		{
 			
 		}
+
+		if (Input.GetKeyDown(KeyCode.Escape))
+		{
+			Application.Quit();
+		}
 	}
 
 
@@ -151,13 +156,16 @@ public class GameController : MonoBehaviour
 	{
 		//TODO 显示小关成功界面 宝石发光之类的？
 		Debug.Log("Game Win!");
-		SceneHelper.Instance.GotoLevelSelect();
 		UnlockedLevels.LevelUnlocked++;
 
 		if (UnlockedLevels.LevelUnlocked > 3)
 		{
 			SceneHelper.Instance.GotoGoodEnd();
 		}
+		else
+		{
+            SceneHelper.Instance.GotoLevelSelect();
+        }
 	}
 
 
