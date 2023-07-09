@@ -41,26 +41,16 @@ public class PlayerScript : MonoBehaviour
         Right,
     }
 
-    static string GetWalkAnimationName(MoveDirection dir, out bool needTurn)
+    static string GetWalkAnimationName(MoveDirection dir)
     {
-        needTurn = false;
 		if (dir == MoveDirection.Up)
-		{
 			return "Player_Walk_Up";
-		}
-		else if (dir == MoveDirection.Down)
-		{
-			return "Player_Walk_Down";
-		}
-		else if (dir == MoveDirection.Right)
-		{
+		else if (dir == MoveDirection.Left)
+			return "Player_Walk_Left";
+        else if (dir == MoveDirection.Right)
 			return "Player_Walk_Right";
-		}
 		else
-		{
-            needTurn = true;
-			return "Player_Walk_Right";
-		}
+			return "Player_Walk_Down";
 	}
 
     static MoveDirection GetVectorDirecition(Vector2 v)
@@ -167,8 +157,8 @@ public class PlayerScript : MonoBehaviour
                 eyeBlinkSide.gameObject.SetActive(!isUpDown);
                 eyeBlinkDown.gameObject.SetActive(isUpDown);
 
-                string aniName = GetWalkAnimationName(dir, out var needTurn);
-				spritePivot.transform.eulerAngles = new Vector3(0, needTurn ? 180f : 0, 0);
+                string aniName = GetWalkAnimationName(dir);
+				//spritePivot.transform.eulerAngles = new Vector3(0, needTurn ? 180f : 0, 0);
 
 				animator.Play(aniName);
                 animator.speed = 1.0f;
@@ -180,7 +170,7 @@ public class PlayerScript : MonoBehaviour
         {
             if (moveDirection != MoveDirection.None)
             {
-				string aniName = GetWalkAnimationName(faceDirection, out var needTurn);
+				string aniName = GetWalkAnimationName(faceDirection);
 				animator.Play(aniName, 0, 0f);
 				animator.speed = 0.0f;
                 moveDirection = MoveDirection.None;
@@ -230,13 +220,13 @@ public class PlayerScript : MonoBehaviour
     {
         string aniName;
         if (faceDirection == MoveDirection.Up)
-            aniName = "Player_TouchUp";
+            aniName = "Player_Touch_Up";
         else if (faceDirection == MoveDirection.Down)
-            aniName = "Player_TouchDown";
+            aniName = "Player_Touch_Down";
         else if (faceDirection == MoveDirection.Left)
-            aniName = "Player_TouchLeft";
+            aniName = "Player_Touch_Left";
         else if (faceDirection == MoveDirection.Right)
-            aniName = "Player_TouchRight";
+            aniName = "Player_Touch_Right";
         else
             aniName = "Wrong";
 
