@@ -151,12 +151,11 @@ public class PlayerScript : MonoBehaviour
 
 	void Update()
     {
-
 		//Behavior: handPrint
 		//长按时持续伸手
-		if (Input.GetAxis("Fire1") > 0)
+		if (Input.GetKey(KeyCode.Space) && GameController.Instance.CanAddHandPrint())
 		{
-			if (!isHandOut && HandPrintLoadtime <= 0f && GameController.Instance.CanAddHandPrint())
+			if (!isHandOut && HandPrintLoadtime <= 0f)
 			{
 				//raycast
 				//Vector2 dir = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));

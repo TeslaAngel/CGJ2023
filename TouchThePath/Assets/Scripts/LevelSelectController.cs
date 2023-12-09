@@ -13,6 +13,7 @@ public static class UnlockedLevels
 public class LevelSelectController : MonoBehaviour
 {
     public Canvas canvas;
+	public GameObject helpText;
 
 	//public DoorObject[] doors;
 	int selectingDoorIndex = -1;
@@ -33,6 +34,7 @@ public class LevelSelectController : MonoBehaviour
 		{
 			canvas.gameObject.SetActive(false);
 		}
+		helpText.SetActive(GD.haveTouchTitle);
 	}
 
 
@@ -49,12 +51,13 @@ public class LevelSelectController : MonoBehaviour
 
 	void Update()
 	{
-		if (Input.GetAxis("Fire1") > 0)
+		if (Input.GetKeyDown(KeyCode.Space))
 		{
 			GD.haveTouchTitle = true;
 			canvas.GetComponent<CanvasGroup>().DOFade(0f, 1f).OnComplete(() =>
 			{
 				canvas.gameObject.SetActive(false);
+				helpText.SetActive(true);
 			});
 		}
 	}

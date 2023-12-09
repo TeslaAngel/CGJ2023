@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-using UnityEngine.UIElements;
+using TMPro;
 
 public class GameController : MonoBehaviour
 {
@@ -33,6 +33,9 @@ public class GameController : MonoBehaviour
 	public AnimationCurve handPrintAlphaCurve;
 
 	public LevelMap currentMap;
+
+	public TMP_Text handPrintText;
+	string handPrintTextContent;
 
 
 	// Use this for initialization
@@ -88,6 +91,12 @@ public class GameController : MonoBehaviour
 		//{
 		//	//mount.GetComponent<PathIndicator>().enabled = false;
 		//}
+
+		if (handPrintText != null)
+		{
+			handPrintTextContent = handPrintText.text;
+			UpdateHandPrintText();
+		}
     }
 
 
@@ -110,20 +119,30 @@ public class GameController : MonoBehaviour
 		var obj = Instantiate(handPrintPrefab, position, rotation, intendedParent);
 		var handprint = obj.GetComponent<HandPrint>();
 
-		float t = handPrints.Count / (float)currentMap.maxHandPrintCount;
+		float t = handPrints.Count / (float)(currentMap.maxHandPrintCount - 1);
 		float alpha = handPrintAlphaCurve.Evaluate(t);
 		handprint.SetDayStatus(alpha);
 		handPrints.Add(handprint);
 		AudioManager.Instance.PlaySfx(Sound.CreateHandPrint);
 
+		UpdateHandPrintText();
+
 		return true;
+	}
+
+	void UpdateHandPrintText()
+	{
+		int remainCount = currentMap.maxHandPrintCount - handPrints.Count;
+		int totalCount = currentMap.maxHandPrintCount;
+		string text = string.Format(handPrintTextContent, remainCount, totalCount);
+		handPrintText.text = text;
 	}
 
 	private void Update()
 	{
 		if (Input.GetKeyDown(KeyCode.Escape))
 		{
-			Application.Quit();
+			SceneHelper.Instance.Restart();
 		}
 
 

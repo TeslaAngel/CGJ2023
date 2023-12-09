@@ -79,6 +79,12 @@ public class SceneHelper : MonoBehaviour
 		});
 	}
 
+	public void Restart()
+	{
+		UnlockedLevels.LevelUnlocked = 1;
+		GD.haveTouchTitle = false;
+		GotoLevelSelect();
+	}
 
 	// Start is called before the first frame update
 	//void Start()
